@@ -6,10 +6,10 @@ import mysql.connector  # 使用 mysql.connector 驱动连接 MySQL/MariaDB
 try:
     # 连接数据库
     conn = mysql.connector.connect(
-        user="root",  # 数据库用户名
-        password="",  # 数据库密码
-        host="localhost",  # 主机地址
-        port=3306,  # 端口号
+        user="root",          # 数据库用户名
+        password="",          # 数据库密码
+        host="localhost",     # 主机地址
+        port=3306,            # 端口号
         database="fooddelivery"  # 数据库名称
     )
     # 创建 cursor，用于执行 SQL 指令，返回结果以字典格式表示
@@ -60,8 +60,12 @@ def getCart(user_id):
     """
     获取购物车内容
     """
-    sql = "SELECT car.cart_id, food.f_name, food.f_price, car.quantity FROM car " \
-          "JOIN food ON car.food_id = food.food_id WHERE car.user_id = %s"
+    sql = """
+    SELECT car.cart_id, food.f_name, food.f_price, car.quantity 
+    FROM car 
+    JOIN food ON car.food_id = food.food_id 
+    WHERE car.user_id = %s
+    """
     cursor.execute(sql, (user_id,))
     return cursor.fetchall()
 
@@ -108,9 +112,50 @@ def getOrderList(user_id):
     cursor.execute(sql, (user_id,))
     return cursor.fetchall()
 
+# 商家结算相关操作
+def getMerchantOrders(merchant_id):
+    """
+    获取商家的已完成订单数据
+    """
+    sql = """
+    SELECT o.order_id, o.total_price, o.order_date
+    FROM orders o
+    JOIN food f ON f.food_id = o.order_id
+    WHERE f.merchant_id = %s AND o.order_status = 'completed'
+    """
+    cursor.execute(sql, (merchant_id,))
+    return cursor.fetchall()
+
+# 送货小哥结算相关操作
+def getDeliveryOrders(delivery_id):
+    """
+    获取送货小哥的配送收入和接单数据
+    """
+    sql = """
+    SELECT d.order_id, d.delivery_time, 5 AS amount
+    FROM delivery_orders d
+    WHERE d.delivery_user_id = %s AND d.delivery_status = 'completed'
+    """
+    cursor.execute(sql, (delivery_id,))
+    return cursor.fetchall()
+
+# 顾客结算相关操作
+def getCustomerOrders(customer_id):
+    """
+    获取顾客的订单消费记录
+    """
+    sql = """
+    SELECT order_id, total_price, order_date, order_status
+    FROM orders
+    WHERE user_id = %s
+    """
+    cursor.execute(sql, (customer_id,))
+    return cursor.fetchall()
+
 # 关闭数据库连接（程序结束时调用）
 def closeConnection():
+    """
+    关闭数据库连接
+    """
     cursor.close()
     conn.close()
-
-

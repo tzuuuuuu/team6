@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>送货小哥结算页面</title>
+</head>
+<body>
+    <h1>送货小哥结算中心</h1>
+    <h2>欢迎, {{ delivery_name }}！</h2>
+
+    <h3>接单统计</h3>
+    <table border="1">
+        <tr>
+            <th>订单号</th>
+            <th>送达时间</th>
+            <th>收入金额</th>
+        </tr>
+        {% for delivery in deliveries %}
+        <tr>
+            <td>{{ delivery.order_id }}</td>
+            <td>{{ delivery.delivery_time }}</td>
+            <td>{{ delivery.amount }} 元</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <h3>总收入：{{ total_income }} 元</h3>
+    <h3>总接单数：{{ total_orders }} 单</h3>
+</body>
+</html>
