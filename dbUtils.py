@@ -6,10 +6,10 @@ import mysql.connector  # 使用 mysql.connector 驱动连接 MySQL/MariaDB
 try:
     # 连接数据库
     conn = mysql.connector.connect(
-        user="root",  # 数据库用户名
-        password="",  # 数据库密码
-        host="localhost",  # 主机地址
-        port=3306,  # 端口号
+        user="root",          # 数据库用户名
+        password="",          # 数据库密码
+        host="localhost",     # 主机地址
+        port=3306,            # 端口号
         database="fooddelivery"  # 数据库名称
     )
     # 创建 cursor，用于执行 SQL 指令，返回结果以字典格式表示
@@ -60,8 +60,12 @@ def getCart(user_id):
     """
     获取购物车内容
     """
-    sql = "SELECT car.cart_id, food.f_name, food.f_price, car.quantity FROM car " \
-          "JOIN food ON car.food_id = food.food_id WHERE car.user_id = %s"
+    sql = """
+    SELECT car.cart_id, food.f_name, food.f_price, car.quantity 
+    FROM car 
+    JOIN food ON car.food_id = food.food_id 
+    WHERE car.user_id = %s
+    """
     cursor.execute(sql, (user_id,))
     return cursor.fetchall()
 
@@ -150,5 +154,8 @@ def getCustomerOrders(customer_id):
 
 # 关闭数据库连接（程序结束时调用）
 def closeConnection():
+    """
+    关闭数据库连接
+    """
     cursor.close()
     conn.close()
