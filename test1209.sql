@@ -152,6 +152,10 @@ CREATE TABLE `settlements` (
   PRIMARY KEY (`settlement_id`),                  -- 设置主键
   FOREIGN KEY (`user_id`) REFERENCES `user`(`id`),-- 关联用户
   FOREIGN KEY (`order_id`) REFERENCES `orders`(`order_id`) -- 关联订单
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 704c175ea0a6cb55ccb622d4623138bdd7827eba
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
@@ -176,6 +180,9 @@ CREATE TABLE `delivery_orders` (
   PRIMARY KEY (`delivery_id`),                  -- 设置主键
   FOREIGN KEY (`order_id`) REFERENCES `orders`(`order_id`), -- 关联订单
   FOREIGN KEY (`delivery_user_id`) REFERENCES `user`(`id`) -- 关联送货员
+<<<<<<< HEAD
+=======
+>>>>>>> origin/db
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -183,6 +190,10 @@ CREATE TABLE `delivery_orders` (
 -- 
 -- 表结构：`financial_summary`（收入与支出汇总表）
 -- 
+<<<<<<< HEAD
+>>>>>>> origin/db
+=======
+>>>>>>> 704c175ea0a6cb55ccb622d4623138bdd7827eba
 CREATE TABLE `financial_summary` (
   `summary_id` int(11) NOT NULL AUTO_INCREMENT, -- 汇总记录ID
   `user_id` int(11) NOT NULL,                  -- 用户ID，外键
