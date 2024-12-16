@@ -76,7 +76,7 @@ def logout():
 @login_required
 def home():
     role = session.get('role')
-    if role == 'seller':
+    if role == 'merchant':
         return redirect('/seller/settlement')
     elif role == 'delivery':
         return redirect('/delivery/settlement')
@@ -88,7 +88,7 @@ def home():
 @app.route('/seller/settlement')
 @login_required
 def merchant_settlement():
-    if session.get('role') != 'seller':
+    if session.get('role') != 'merchant':
         return redirect('/')
     merchant_id = session.get('user_id')  # 获取商家ID
     data = DB.getMerchantOrders(merchant_id)  # 获取商家订单数据
