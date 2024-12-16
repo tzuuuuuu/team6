@@ -23,7 +23,13 @@ def register():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
+        contact_number = request.form['contact_number']  # 获取联系方式
+        role = request.form['role']  # 获取角色
         
+        # 验证字段是否为空
+        if not username or not password or not contact_number or not role:
+            return render_template('register.html', error="所有字段均为必填项")
+
         # 檢查用戶是否已存在
         if DB.get_user(username):
             return render_template('register.html', error="用户已存在")

@@ -36,11 +36,14 @@ def get_user(username):
     cursor.execute(sql, (username,))
     return cursor.fetchone()
 
-def add_user(username, password, role="customer", contact_info=None):
+def add_user(username, password, role, contact_info):
     """
     添加新用户
     """
-    sql = "INSERT INTO user (username, password, role, contact_info) VALUES (%s, %s, %s, %s)"
+    sql = """
+    INSERT INTO user (username, password, role, contact_info)
+    VALUES (%s, %s, %s, %s)
+    """
     cursor.execute(sql, (username, password, role, contact_info))
     conn.commit()
 
