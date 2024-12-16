@@ -47,11 +47,7 @@ def allOrders():
         return render_template('allorders.html')
 	
 # 商家结算页面
-<<<<<<< HEAD
-@app.route('/merchant/settlement')
-=======
 @app.route('/seller/settlement')
->>>>>>> main
 @login_required
 def merchant_settlement():
     if session.get('role') != 'merchant':
@@ -59,11 +55,7 @@ def merchant_settlement():
     merchant_id = session.get('loginID')  # 获取商家ID
     data = DB.getMerchantOrders(merchant_id)  # 获取商家订单数据
     total_income = sum(order['total_price'] for order in data)
-<<<<<<< HEAD
-    return render_template('merchant_settlement.html', orders=data, total_income=total_income, merchant_name="商家名称")
-=======
     return render_template('seller_settlement.html', orders=data, total_income=total_income, merchant_name="商家名称")
->>>>>>> main
 
 
 # 送货小哥结算页面
@@ -89,12 +81,9 @@ def customer_settlement():
     data = DB.getCustomerOrders(customer_id)  # 获取顾客订单数据
     total_expense = sum(order['total_price'] for order in data)
     return render_template('customer_settlement.html', orders=data, total_expense=total_expense, customer_name="顾客名称")
-<<<<<<< HEAD
 
 @app.route('/logout')
 @login_required
 def logout():
     session.clear()
     return redirect('/loginPage.html')
-=======
->>>>>>> main
