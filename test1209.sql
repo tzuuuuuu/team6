@@ -72,7 +72,7 @@ INSERT INTO `food` (`food_id`, `merchant_id`, `f_name`, `f_price`, `f_content`) 
 -- --------------------------------------------------------
 
 -- 
--- 表结构：`car`
+-- 表结构：`car` (购物车)
 -- 
 CREATE TABLE `car` (
   `cart_id` int(11) NOT NULL AUTO_INCREMENT,     -- 购物车ID，自增主键
@@ -139,18 +139,20 @@ INSERT INTO `order_details` (`detail_id`, `order_id`, `food_id`, `quantity`, `pr
 -- --------------------------------------------------------
 
 -- 
--- 表结构：`feedback`
+-- 表结构：`settlements`（结算记录）
 -- 
-CREATE TABLE `feedback` (
-  `feedback_id` int(11) NOT NULL AUTO_INCREMENT, -- 评价ID，自增主键
-  `food_id` int(11) NOT NULL,                    -- 菜品ID，外键
-  `user_id` int(11) NOT NULL,                    -- 用户ID，外键
-  `rating` int(11) NOT NULL,                     -- 评分（1-5星）
-  `comments` text,                               -- 评价内容
-  `feedback_date` datetime NOT NULL,             -- 评价时间
-  PRIMARY KEY (`feedback_id`),                   -- 设置主键
-  FOREIGN KEY (`food_id`) REFERENCES `food`(`food_id`), -- 外键关联菜品
-  FOREIGN KEY (`user_id`) REFERENCES `user`(`id`) -- 外键关联用户
+CREATE TABLE `settlements` (
+  `settlement_id` int(11) NOT NULL AUTO_INCREMENT, -- 结算记录ID
+  `user_id` int(11) NOT NULL,                     -- 用户ID，外键
+  `role` enum('merchant', 'delivery', 'customer') NOT NULL, -- 用户角色
+  `amount` decimal(10, 2) NOT NULL,               -- 结算金额
+  `transaction_type` enum('income', 'expense') NOT NULL, -- 交易类型
+  `order_id` int(11),                             -- 关联订单ID
+  `settlement_date` datetime NOT NULL,            -- 结算时间
+  PRIMARY KEY (`settlement_id`),                  -- 设置主键
+  FOREIGN KEY (`user_id`) REFERENCES `user`(`id`),-- 关联用户
+  FOREIGN KEY (`order_id`) REFERENCES `orders`(`order_id`) -- 关联订单
+<<<<<<< HEAD
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
@@ -163,21 +165,62 @@ INSERT INTO `feedback` (`feedback_id`, `food_id`, `user_id`, `rating`, `comments
 -- --------------------------------------------------------
 
 -- 
--- 表结构：`payments`
+-- 表结构：`delivery_orders`（送货员订单表）
 -- 
-CREATE TABLE `payments` (
-  `payment_id` int(11) NOT NULL AUTO_INCREMENT,  -- 结算记录ID，自增主键
-  `user_id` int(11) NOT NULL,                    -- 用户ID，外键
-  `amount` decimal(10, 2) NOT NULL,              -- 金额
-  `payment_date` datetime NOT NULL,              -- 结算时间
-  `payment_type` enum('merchant_income', 'delivery_income', 'platform_fee') NOT NULL, -- 结算类型
-  PRIMARY KEY (`payment_id`),                    -- 设置主键
+CREATE TABLE `delivery_orders` (
+  `delivery_id` int(11) NOT NULL AUTO_INCREMENT, -- 送货ID
+  `order_id` int(11) NOT NULL,                  -- 订单ID
+  `delivery_user_id` int(11) NOT NULL,          -- 送货员ID
+  `pickup_time` datetime,                       -- 取餐时间
+  `delivery_time` datetime,                     -- 送达时间
+  `delivery_status` enum('accepted', 'in_delivery', 'completed') DEFAULT 'accepted', -- 送货状态
+  PRIMARY KEY (`delivery_id`),                  -- 设置主键
+  FOREIGN KEY (`order_id`) REFERENCES `orders`(`order_id`), -- 关联订单
+  FOREIGN KEY (`delivery_user_id`) REFERENCES `user`(`id`) -- 关联送货员
+=======
+>>>>>>> origin/db
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- --------------------------------------------------------
+
+-- 
+<<<<<<< HEAD
+-- 表结构：`financial_summary`（收入与支出汇总表）
+-- 
+=======
+-- 表结构：`delivery_orders`（送货员订单表）
+-- 
+CREATE TABLE `delivery_orders` (
+  `delivery_id` int(11) NOT NULL AUTO_INCREMENT, -- 送货ID
+  `order_id` int(11) NOT NULL,                  -- 订单ID
+  `delivery_user_id` int(11) NOT NULL,          -- 送货员ID
+  `pickup_time` datetime,                       -- 取餐时间
+  `delivery_time` datetime,                     -- 送达时间
+  `delivery_status` enum('accepted', 'in_delivery', 'completed') DEFAULT 'accepted', -- 送货状态
+  PRIMARY KEY (`delivery_id`),                  -- 设置主键
+  FOREIGN KEY (`order_id`) REFERENCES `orders`(`order_id`), -- 关联订单
+  FOREIGN KEY (`delivery_user_id`) REFERENCES `user`(`id`) -- 关联送货员
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- --------------------------------------------------------
+
+-- 
+-- 表结构：`financial_summary`（收入与支出汇总表）
+-- 
+>>>>>>> origin/db
+CREATE TABLE `financial_summary` (
+  `summary_id` int(11) NOT NULL AUTO_INCREMENT, -- 汇总记录ID
+  `user_id` int(11) NOT NULL,                  -- 用户ID，外键
+  `role` enum('merchant', 'delivery', 'customer') NOT NULL, -- 用户角色
+  `total_income` decimal(10, 2) DEFAULT 0,     -- 总收入
+  `total_expense` decimal(10, 2) DEFAULT 0,    -- 总支出
+  `order_count` int(11) DEFAULT 0,             -- 订单数量
+  `report_date` date NOT NULL,                 -- 统计时间
+  PRIMARY KEY (`summary_id`),                  -- 设置主键
   FOREIGN KEY (`user_id`) REFERENCES `user`(`id`) -- 外键关联用户
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
--- 
 -- 提交事务
--- 
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
