@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>商家结算页面</title>
+</head>
+<body>
+    <h1>商家结算中心</h1>
+    <h2>欢迎, {{ merchant_name }}！</h2>
+
+    <h3>应收金额统计</h3>
+    <table border="1">
+        <tr>
+            <th>订单号</th>
+            <th>订单金额</th>
+            <th>订单完成时间</th>
+        </tr>
+        {% for order in orders %}
+        <tr>
+            <td>{{ order.order_id }}</td>
+            <td>{{ order.total_price }}</td>
+            <td>{{ order.settlement_date }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <h3>总收入：{{ total_income }} 元</h3>
+</body>
+</html>

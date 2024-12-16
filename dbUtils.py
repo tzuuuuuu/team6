@@ -108,9 +108,47 @@ def getOrderList(user_id):
     cursor.execute(sql, (user_id,))
     return cursor.fetchall()
 
+# 商家结算相关操作
+def getMerchantOrders(merchant_id):
+    """
+    获取商家的已完成订单数据
+    """
+    sql = """
+    SELECT o.order_id, o.total_price, o.order_date
+    FROM orders o
+    JOIN food f ON f.food_id = o.order_id
+    WHERE f.merchant_id = %s AND o.order_status = 'completed'
+    """
+    cursor.execute(sql, (merchant_id,))
+    return cursor.fetchall()
+
+# 送货小哥结算相关操作
+def getDeliveryOrders(delivery_id):
+    """
+    获取送货小哥的配送收入和接单数据
+    """
+    sql = """
+    SELECT d.order_id, d.delivery_time, 5 AS amount
+    FROM delivery_orders d
+    WHERE d.delivery_user_id = %s AND d.delivery_status = 'completed'
+    """
+    cursor.execute(sql, (delivery_id,))
+    return cursor.fetchall()
+
+# 顾客结算相关操作
+def getCustomerOrders(customer_id):
+    """
+    获取顾客的订单消费记录
+    """
+    sql = """
+    SELECT order_id, total_price, order_date, order_status
+    FROM orders
+    WHERE user_id = %s
+    """
+    cursor.execute(sql, (customer_id,))
+    return cursor.fetchall()
+
 # 关闭数据库连接（程序结束时调用）
 def closeConnection():
     cursor.close()
     conn.close()
-
-
