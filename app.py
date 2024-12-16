@@ -21,25 +21,28 @@ def login_required(f):
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
-        username = request.form['username']
-        password = request.form['password']
-        contact_number = request.form['contact_number']  # 获取联系方式
-        role = request.form['role']  # 获取角色
-        
-        # 验证字段是否为空
+        username = request.form.get('username')
+        password = request.form.get('password')
+        contact_number = request.form.get('contact_number')  # 必填字段
+        role = request.form.get('role')  # 必填字段
+
+        # 验证是否填写所有字段
         if not username or not password or not contact_number or not role:
             return render_template('register.html', error="所有字段均为必填项")
 
-        # 檢查用戶是否已存在
+        # 检查用户是否已存在
         if DB.get_user(username):
             return render_template('register.html', error="用户已存在")
-        
-        # 哈希密码并新增用戶
+
+        # 哈希密码并新增用户
         hashed_password = generate_password_hash(password)
-        DB.add_user(username, hashed_password)
-        return redirect('/login')  # 註冊成功後重定向至登入頁面
-    
+
+        DB.add_user(username, hashed_password, role, contact_number)
+
+        return redirect('/login')  # 注册成功后跳转至登录页面
+
     return render_template('register.html')
+
 
 # 用戶登入
 @app.route('/login', methods=['GET', 'POST'])

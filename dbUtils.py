@@ -28,14 +28,6 @@ def checkLogin(username, password):
     cursor.execute(sql, (username, password))
     return cursor.fetchone()
 
-def get_user(username):
-    """
-    获取用户信息
-    """
-    sql = "SELECT * FROM user WHERE username = %s"
-    cursor.execute(sql, (username,))
-    return cursor.fetchone()
-
 def add_user(username, password, role, contact_info):
     """
     添加新用户
@@ -46,6 +38,15 @@ def add_user(username, password, role, contact_info):
     """
     cursor.execute(sql, (username, password, role, contact_info))
     conn.commit()
+
+def get_user(username):
+    """
+    获取用户信息
+    """
+    sql = "SELECT * FROM user WHERE username = %s"
+    cursor.execute(sql, (username,))
+    return cursor.fetchone()
+
 
 # 菜品相关操作
 def getFoodList():
