@@ -154,6 +154,7 @@ CREATE TABLE `settlements` (
   FOREIGN KEY (`order_id`) REFERENCES `orders`(`order_id`) -- 关联订单
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> 704c175ea0a6cb55ccb622d4623138bdd7827eba
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
@@ -183,6 +184,33 @@ CREATE TABLE `delivery_orders` (
 <<<<<<< HEAD
 =======
 >>>>>>> origin/db
+=======
+>>>>>>> origin/db
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- --------------------------------------------------------
+
+-- 
+<<<<<<< HEAD
+-- 表结构：`financial_summary`（收入与支出汇总表）
+-- 
+<<<<<<< HEAD
+>>>>>>> origin/db
+=======
+>>>>>>> 704c175ea0a6cb55ccb622d4623138bdd7827eba
+=======
+-- 表结构：`delivery_orders`（送货员订单表）
+-- 
+CREATE TABLE `delivery_orders` (
+  `delivery_id` int(11) NOT NULL AUTO_INCREMENT, -- 送货ID
+  `order_id` int(11) NOT NULL,                  -- 订单ID
+  `delivery_user_id` int(11) NOT NULL,          -- 送货员ID
+  `pickup_time` datetime,                       -- 取餐时间
+  `delivery_time` datetime,                     -- 送达时间
+  `delivery_status` enum('accepted', 'in_delivery', 'completed') DEFAULT 'accepted', -- 送货状态
+  PRIMARY KEY (`delivery_id`),                  -- 设置主键
+  FOREIGN KEY (`order_id`) REFERENCES `orders`(`order_id`), -- 关联订单
+  FOREIGN KEY (`delivery_user_id`) REFERENCES `user`(`id`) -- 关联送货员
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -190,10 +218,7 @@ CREATE TABLE `delivery_orders` (
 -- 
 -- 表结构：`financial_summary`（收入与支出汇总表）
 -- 
-<<<<<<< HEAD
 >>>>>>> origin/db
-=======
->>>>>>> 704c175ea0a6cb55ccb622d4623138bdd7827eba
 CREATE TABLE `financial_summary` (
   `summary_id` int(11) NOT NULL AUTO_INCREMENT, -- 汇总记录ID
   `user_id` int(11) NOT NULL,                  -- 用户ID，外键
