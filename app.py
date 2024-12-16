@@ -39,7 +39,7 @@ def register():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'GET':
-        return render_template('loginPage.html')
+        return redirect(url_for('static', filename='loginPage.html'))
     
     if request.method == 'POST':
         username = request.form['username']
@@ -53,7 +53,7 @@ def login():
             session['role'] = user['role']  # 将角色保存到 session
             return redirect('/')
         else:
-            return render_template('loginPage.html', error="用户名或密码错误")
+            return redirect(url_for('static', filename='loginPage.html') + '?error=用户名或密码错误')
 
 # 注销功能
 @app.route('/logout')
