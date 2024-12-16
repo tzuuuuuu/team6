@@ -37,6 +37,15 @@ CREATE TABLE `user` (
   PRIMARY KEY (`id`)                             -- 设置主键
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+--
+-- 傾印資料表的資料 `user`
+--
+
+INSERT INTO `user` (`id`, `username`, `password`, `role`, `contact_info`) VALUES
+(123456, '好好吃', 'abc', 'merchant', '0912345678'),
+(223456, '小明', 'xyz', 'customer', '0987654321'),
+(323456, '吳柏毅', 'opq', 'delivery', '0911222333');
+
 -- --------------------------------------------------------
 
 -- 
@@ -51,6 +60,14 @@ CREATE TABLE `food` (
   PRIMARY KEY (`food_id`),                       -- 设置主键
   FOREIGN KEY (`merchant_id`) REFERENCES `user`(`id`) -- 外键关联商家
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- 傾印資料表的資料 `food`
+--
+
+INSERT INTO `food` (`food_id`, `merchant_id`, `f_name`, `f_price`, `f_content`) VALUES
+(1, 123456, '薯條', 200.00, '現炸脆薯條'),
+(2, 123456, '炸雞', 50.00, '新鮮雞肉');
 
 -- --------------------------------------------------------
 
@@ -67,6 +84,13 @@ CREATE TABLE `car` (
   FOREIGN KEY (`food_id`) REFERENCES `food`(`food_id`) -- 外键关联菜品
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+--
+-- 傾印資料表的資料 `car`
+--
+
+INSERT INTO `car` (`cart_id`, `user_id`, `food_id`, `quantity`) VALUES
+(1, 223456, 2, 3);
+
 -- --------------------------------------------------------
 
 -- 
@@ -81,6 +105,13 @@ CREATE TABLE `orders` (
   PRIMARY KEY (`order_id`),                      -- 设置主键
   FOREIGN KEY (`user_id`) REFERENCES `user`(`id`) -- 外键关联用户
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- 傾印資料表的資料 `orders`
+--
+
+INSERT INTO `orders` (`order_id`, `user_id`, `total_price`, `order_date`, `order_status`) VALUES
+(1, 223456, 150.00, '2024-12-16 09:33:27', 'pending');
 
 -- --------------------------------------------------------
 
@@ -98,6 +129,13 @@ CREATE TABLE `order_details` (
   FOREIGN KEY (`food_id`) REFERENCES `food`(`food_id`) -- 外键关联菜品
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+--
+-- 傾印資料表的資料 `order_details`
+--
+
+INSERT INTO `order_details` (`detail_id`, `order_id`, `food_id`, `quantity`, `price`) VALUES
+(1, 1, 2, 3, 50.00);
+
 -- --------------------------------------------------------
 
 -- 
@@ -114,6 +152,13 @@ CREATE TABLE `feedback` (
   FOREIGN KEY (`food_id`) REFERENCES `food`(`food_id`), -- 外键关联菜品
   FOREIGN KEY (`user_id`) REFERENCES `user`(`id`) -- 外键关联用户
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- 傾印資料表的資料 `feedback`
+--
+
+INSERT INTO `feedback` (`feedback_id`, `food_id`, `user_id`, `rating`, `comments`, `feedback_date`) VALUES
+(1, 1, 223456, 5, '非常好吃，讓人想一口接一口', '2024-12-16 09:30:46');
 
 -- --------------------------------------------------------
 
