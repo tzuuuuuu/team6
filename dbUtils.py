@@ -28,14 +28,21 @@ def checkLogin(username, password):
     cursor.execute(sql, (username, password))
     return cursor.fetchone()
 
-def addUser(data):
+def get_user(username):
     """
-    添加用户
+    获取用户信息
+    """
+    sql = "SELECT * FROM user WHERE username = %s"
+    cursor.execute(sql, (username,))
+    return cursor.fetchone()
+
+def add_user(username, password, role="customer", contact_info=None):
+    """
+    添加新用户
     """
     sql = "INSERT INTO user (username, password, role, contact_info) VALUES (%s, %s, %s, %s)"
-    cursor.execute(sql, (data['username'], data['password'], data['role'], data['contact_info']))
+    cursor.execute(sql, (username, password, role, contact_info))
     conn.commit()
-    return
 
 # 菜品相关操作
 def getFoodList():
@@ -53,7 +60,6 @@ def addFood(data):
     sql = "INSERT INTO food (merchant_id, f_name, f_price, f_content) VALUES (%s, %s, %s, %s)"
     cursor.execute(sql, (data['merchant_id'], data['f_name'], data['f_price'], data['f_content']))
     conn.commit()
-    return
 
 # 购物车相关操作
 def getCart(user_id):
@@ -76,7 +82,6 @@ def addToCart(data):
     sql = "INSERT INTO car (user_id, food_id, quantity) VALUES (%s, %s, %s)"
     cursor.execute(sql, (data['user_id'], data['food_id'], data['quantity']))
     conn.commit()
-    return
 
 def removeFromCart(cart_id):
     """
@@ -85,7 +90,6 @@ def removeFromCart(cart_id):
     sql = "DELETE FROM car WHERE cart_id = %s"
     cursor.execute(sql, (cart_id,))
     conn.commit()
-    return
 
 # 订单相关操作
 def createOrder(data):
@@ -103,6 +107,14 @@ def createOrder(data):
         cursor.execute(sql_details, (order_id, item['food_id'], item['quantity'], item['price']))
     conn.commit()
     return order_id
+
+def updateOrderStatus(order_id, status):
+    """
+    更新订单状态
+    """
+    sql = "UPDATE orders SET order_status = %s WHERE order_id = %s"
+    cursor.execute(sql, (status, order_id))
+    conn.commit()
 
 def getOrderList(user_id):
     """
@@ -151,6 +163,18 @@ def getCustomerOrders(customer_id):
     """
     cursor.execute(sql, (customer_id,))
     return cursor.fetchall()
+
+# 结算记录操作
+def recordSettlement(user_id, role, amount, transaction_type, order_id=None):
+    """
+    添加结算记录
+    """
+    sql = """
+    INSERT INTO settlements (user_id, role, amount, transaction_type, order_id, settlement_date) 
+    VALUES (%s, %s, %s, %s, %s, NOW())
+    """
+    cursor.execute(sql, (user_id, role, amount, transaction_type, order_id))
+    conn.commit()
 
 # 关闭数据库连接（程序结束时调用）
 def closeConnection():

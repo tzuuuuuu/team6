@@ -1,0 +1,71 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>註冊</title>
+    <!-- 引入 Bootstrap -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* 設置背景顏色與表單區域 */
+        body {
+            background-color: #f8f9fa;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .register-container {
+            background-color: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+        }
+        .form-control {
+            height: calc(2.25rem + 2px);
+        }
+        .register-btn {
+            width: 100%;
+            font-size: 1.1rem;
+            padding: 10px;
+        }
+        .form-title {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #343a40;
+        }
+        .login-link {
+            text-align: center;
+            display: block;
+            margin-top: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="register-container">
+                    <h2 class="form-title text-center mb-4">註冊新用戶</h2>
+                    <form action="/register" method="POST">
+                        <div class="form-group">
+                            <label for="username">用戶名</label>
+                            <input type="text" class="form-control" name="username" placeholder="輸入用戶名" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="password">密碼</label>
+                            <input type="password" class="form-control" name="password" placeholder="輸入密碼" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary register-btn">註冊</button>
+                    </form>
+                    <p class="login-link">已經有帳號？<a href="/login">登入</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 引入 Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
