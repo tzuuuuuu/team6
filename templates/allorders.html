@@ -1,0 +1,78 @@
+<html><head>
+    <meta charset="utf-8">
+    <title>AllList</title></head>
+    <style type="text/css">
+    body{
+        text-align: center
+        }
+      
+    #container{
+        width:900px;
+        border:2px solid #ccc;
+        margin:0px auto;
+        padding:20px;
+        background-color:aliceblue;
+    }
+    
+
+    
+    #container h2{
+        background-color:gray ;
+        color:ivory;
+        padding:6px 15px;
+        letter-spacing: 0.2em;
+        border-bottom:2px;
+        border-left:12px;
+        border-right:12px;
+        border-top:12px;
+        border-radius:50px 50px 50px 50px;
+        padding-left:20px;
+    }
+    </style>
+    
+    <body>
+        <div style="text-align: right">
+            <h5>歡迎, {{ username }}!</h5>
+            
+            </div>
+
+    <div id="container">
+    
+    <h2>所有訂單</h2>
+    
+    {% if message %}
+    <div style="color: red;">{{ message }}</div>
+    {% endif %}
+
+    <form method="POST" action="/allorders">
+    <table align="center" width="700" border="5">
+        <tr>
+            <th>訂單編號</th>
+            <th>客戶</th>
+            <th>金額</th>
+            <th>時間</th>
+            <th>是否接單</th>
+        </tr>
+        
+        {% for rec in data %}
+        <tr>
+            <td>{{ rec.order_id }}
+                <input type="hidden" name="item_name_{{ loop.index }}" value="{{ rec.name }}" />  <!-- 隱藏商品名稱 -->
+            </td>
+            <td>{{ rec.user_id }}</td>
+            <td>${{ rec.total_price }}</td>
+            <td>{{ rec.order_date }}</td>
+            <td><button type="submit" name="submit_bid" value="{{ loop.index }}">接單</button></td>
+            
+            
+        </tr>
+        {% endfor %}
+    </table>
+    </form>
+    <a href="/ownlist">回我的清單</a>
+</div>
+    </div>
+    </div>
+    </body></html>
+    
+    
