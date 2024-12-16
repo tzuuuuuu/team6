@@ -25,9 +25,7 @@ USE `fooddelivery`;
 
 -- --------------------------------------------------------
 
--- 
 -- 表结构：`user`
--- 
 CREATE TABLE `user` (
   `id` int(11) NOT NULL AUTO_INCREMENT,          -- 用户ID，自增主键
   `username` varchar(50) NOT NULL,               -- 用户名
@@ -37,10 +35,7 @@ CREATE TABLE `user` (
   PRIMARY KEY (`id`)                             -- 设置主键
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
---
--- 傾印資料表的資料 `user`
---
-
+-- 插入数据到 `user`
 INSERT INTO `user` (`id`, `username`, `password`, `role`, `contact_info`) VALUES
 (123456, '好好吃', 'abc', 'merchant', '0912345678'),
 (223456, '小明', 'xyz', 'customer', '0987654321'),
@@ -48,9 +43,7 @@ INSERT INTO `user` (`id`, `username`, `password`, `role`, `contact_info`) VALUES
 
 -- --------------------------------------------------------
 
--- 
 -- 表结构：`food`
--- 
 CREATE TABLE `food` (
   `food_id` int(11) NOT NULL AUTO_INCREMENT,     -- 菜品ID，自增主键
   `merchant_id` int(11) NOT NULL,                -- 商家ID，外键
@@ -61,19 +54,14 @@ CREATE TABLE `food` (
   FOREIGN KEY (`merchant_id`) REFERENCES `user`(`id`) -- 外键关联商家
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
---
--- 傾印資料表的資料 `food`
---
-
+-- 插入数据到 `food`
 INSERT INTO `food` (`food_id`, `merchant_id`, `f_name`, `f_price`, `f_content`) VALUES
 (1, 123456, '薯條', 200.00, '現炸脆薯條'),
 (2, 123456, '炸雞', 50.00, '新鮮雞肉');
 
 -- --------------------------------------------------------
 
--- 
 -- 表结构：`car` (购物车)
--- 
 CREATE TABLE `car` (
   `cart_id` int(11) NOT NULL AUTO_INCREMENT,     -- 购物车ID，自增主键
   `user_id` int(11) NOT NULL,                    -- 用户ID，外键
@@ -84,18 +72,13 @@ CREATE TABLE `car` (
   FOREIGN KEY (`food_id`) REFERENCES `food`(`food_id`) -- 外键关联菜品
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
---
--- 傾印資料表的資料 `car`
---
-
+-- 插入数据到 `car`
 INSERT INTO `car` (`cart_id`, `user_id`, `food_id`, `quantity`) VALUES
 (1, 223456, 2, 3);
 
 -- --------------------------------------------------------
 
--- 
 -- 表结构：`orders`
--- 
 CREATE TABLE `orders` (
   `order_id` int(11) NOT NULL AUTO_INCREMENT,    -- 订单ID，自增主键
   `user_id` int(11) NOT NULL,                    -- 用户ID，外键
@@ -106,18 +89,13 @@ CREATE TABLE `orders` (
   FOREIGN KEY (`user_id`) REFERENCES `user`(`id`) -- 外键关联用户
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
---
--- 傾印資料表的資料 `orders`
---
-
+-- 插入数据到 `orders`
 INSERT INTO `orders` (`order_id`, `user_id`, `total_price`, `order_date`, `order_status`) VALUES
 (1, 223456, 150.00, '2024-12-16 09:33:27', 'pending');
 
 -- --------------------------------------------------------
 
--- 
 -- 表结构：`order_details`
--- 
 CREATE TABLE `order_details` (
   `detail_id` int(11) NOT NULL AUTO_INCREMENT,   -- 订单详情ID，自增主键
   `order_id` int(11) NOT NULL,                   -- 订单ID，外键
@@ -129,18 +107,13 @@ CREATE TABLE `order_details` (
   FOREIGN KEY (`food_id`) REFERENCES `food`(`food_id`) -- 外键关联菜品
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
---
--- 傾印資料表的資料 `order_details`
---
-
+-- 插入数据到 `order_details`
 INSERT INTO `order_details` (`detail_id`, `order_id`, `food_id`, `quantity`, `price`) VALUES
 (1, 1, 2, 3, 50.00);
 
 -- --------------------------------------------------------
 
--- 
--- 表结构：`settlements`（结算记录）
--- 
+-- 表结构：`settlements`
 CREATE TABLE `settlements` (
   `settlement_id` int(11) NOT NULL AUTO_INCREMENT, -- 结算记录ID
   `user_id` int(11) NOT NULL,                     -- 用户ID，外键
@@ -152,57 +125,11 @@ CREATE TABLE `settlements` (
   PRIMARY KEY (`settlement_id`),                  -- 设置主键
   FOREIGN KEY (`user_id`) REFERENCES `user`(`id`),-- 关联用户
   FOREIGN KEY (`order_id`) REFERENCES `orders`(`order_id`) -- 关联订单
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 704c175ea0a6cb55ccb622d4623138bdd7827eba
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
---
--- 傾印資料表的資料 `feedback`
---
-
-INSERT INTO `feedback` (`feedback_id`, `food_id`, `user_id`, `rating`, `comments`, `feedback_date`) VALUES
-(1, 1, 223456, 5, '非常好吃，讓人想一口接一口', '2024-12-16 09:30:46');
-
--- --------------------------------------------------------
-
--- 
--- 表结构：`delivery_orders`（送货员订单表）
--- 
-CREATE TABLE `delivery_orders` (
-  `delivery_id` int(11) NOT NULL AUTO_INCREMENT, -- 送货ID
-  `order_id` int(11) NOT NULL,                  -- 订单ID
-  `delivery_user_id` int(11) NOT NULL,          -- 送货员ID
-  `pickup_time` datetime,                       -- 取餐时间
-  `delivery_time` datetime,                     -- 送达时间
-  `delivery_status` enum('accepted', 'in_delivery', 'completed') DEFAULT 'accepted', -- 送货状态
-  PRIMARY KEY (`delivery_id`),                  -- 设置主键
-  FOREIGN KEY (`order_id`) REFERENCES `orders`(`order_id`), -- 关联订单
-  FOREIGN KEY (`delivery_user_id`) REFERENCES `user`(`id`) -- 关联送货员
-<<<<<<< HEAD
-=======
->>>>>>> origin/db
-=======
->>>>>>> origin/db
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
--- 
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
--- 表结构：`financial_summary`（收入与支出汇总表）
--- 
-<<<<<<< HEAD
->>>>>>> origin/db
-=======
->>>>>>> 704c175ea0a6cb55ccb622d4623138bdd7827eba
-=======
--- 表结构：`delivery_orders`（送货员订单表）
--- 
+-- 表结构：`delivery_orders`
 CREATE TABLE `delivery_orders` (
   `delivery_id` int(11) NOT NULL AUTO_INCREMENT, -- 送货ID
   `order_id` int(11) NOT NULL,                  -- 订单ID
@@ -217,24 +144,6 @@ CREATE TABLE `delivery_orders` (
 
 -- --------------------------------------------------------
 
--- 
->>>>>>> origin/結算頁面
--- 表结构：`financial_summary`（收入与支出汇总表）
--- 
->>>>>>> origin/db
-CREATE TABLE `financial_summary` (
-  `summary_id` int(11) NOT NULL AUTO_INCREMENT, -- 汇总记录ID
-  `user_id` int(11) NOT NULL,                  -- 用户ID，外键
-  `role` enum('merchant', 'delivery', 'customer') NOT NULL, -- 用户角色
-  `total_income` decimal(10, 2) DEFAULT 0,     -- 总收入
-  `total_expense` decimal(10, 2) DEFAULT 0,    -- 总支出
-  `order_count` int(11) DEFAULT 0,             -- 订单数量
-  `report_date` date NOT NULL,                 -- 统计时间
-  PRIMARY KEY (`summary_id`),                  -- 设置主键
-  FOREIGN KEY (`user_id`) REFERENCES `user`(`id`) -- 外键关联用户
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
--- 提交事务
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
