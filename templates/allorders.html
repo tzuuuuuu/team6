@@ -39,12 +39,8 @@
     <div id="container">
     
     <h2>所有訂單</h2>
-    
-    {% if message %}
-    <div style="color: red;">{{ message }}</div>
-    {% endif %}
 
-    <form method="POST" action="/allorders">
+    
     <table align="center" width="700" border="5">
         <tr>
             <th>訂單編號</th>
@@ -56,9 +52,7 @@
         
         {% for rec in data %}
         <tr>
-            <td>{{ rec.order_id }}
-                <input type="hidden" name="item_name_{{ loop.index }}" value="{{ rec.name }}" />  <!-- 隱藏商品名稱 -->
-            </td>
+            <td>{{ rec.order_id }}</td>
             <td>{{ rec.user_id }}</td>
             <td>${{ rec.total_price }}</td>
             <td>{{ rec.order_date }}</td>
