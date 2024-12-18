@@ -184,7 +184,7 @@ def getDeliveryOrderList():
     """
     送餐小哥可接所有訂單
     """
-    sql = "SELECT * FROM orders"
+    sql = "SELECT * FROM orders WHERE order_status = 'pending'"
     cursor.execute(sql)
     return cursor.fetchall()
 
