@@ -37,9 +37,9 @@ CREATE TABLE `user` (
 
 -- 插入数据到 `user`
 INSERT INTO `user` (`id`, `username`, `password`, `role`, `contact_info`) VALUES
-(123456, '好好吃', 'abc', 'merchant', '0912345678'),
-(223456, '小明', 'xyz', 'customer', '0987654321'),
-(323456, '吳柏毅', 'opq', 'delivery', '0911222333');
+(123456, 'restaurant1', 'abc', 'merchant', '0912345678'),
+(223456, 'cus1', 'xyz', 'customer', '0987654321'),
+(323456, 'del1', 'opq', 'delivery', '0911222333');
 
 -- --------------------------------------------------------
 
