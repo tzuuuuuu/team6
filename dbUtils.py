@@ -180,6 +180,23 @@ def recordSettlement(user_id, role, amount, transaction_type, order_id=None):
     cursor.execute(sql, (user_id, role, amount, transaction_type, order_id))
     conn.commit()
 
+def getDeliveryOrderList():
+    """
+    送餐小哥可接所有訂單
+    """
+    sql = "SELECT * FROM orders"
+    cursor.execute(sql)
+    return cursor.fetchall()
+
+def updateOrderStatus(order_id, status):
+    """
+    更新訂單狀態
+    """
+    sql = "UPDATE orders SET order_status = %s WHERE order_id = %s"
+    cursor.execute(sql, (status, order_id))
+    conn.commit()
+
+
 # 关闭数据库连接（程序结束时调用）
 def closeConnection():
     """

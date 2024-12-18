@@ -122,11 +122,19 @@ def customer_settlement():
 @app.route('/allorders')
 @login_required
 def all_orders():
-    user_id = session.get('user_id')
-    if user_id:
-        data = DB.getOrderList(user_id)
-        return render_template('allorders.html', data=data)
-    return render_template('allorders.html')
+    data = DB.getDeliveryOrderList()
+    return render_template('allorders.html', data=data)
+    
+@app.route('/accept_order', methods=['POST'])
+@login_required
+def accept_order():
+    order_id = request.form.get('order_id')
+    message = ""  # 訊息變數
+    if order_id:
+        DB.updateOrderStatus(order_id, 'in_delivery')
+        message = f"成功接單 #{order_id}"
+    return render_template('allorders.html', message=message, data=DB.getDeliveryOrderList())
+
     
 if __name__ == '__main__':
     app.run(debug=True)

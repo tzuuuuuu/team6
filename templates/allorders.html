@@ -40,7 +40,10 @@
     
     <h2>所有訂單</h2>
 
-    
+    {% if message %}
+    <div style="color: green; font-weight: bold;">{{ message }}</div>
+    {% endif %}
+
     <table align="center" width="700" border="5">
         <tr>
             <th>訂單編號</th>
@@ -56,7 +59,12 @@
             <td>{{ rec.user_id }}</td>
             <td>${{ rec.total_price }}</td>
             <td>{{ rec.order_date }}</td>
-            <td><button type="submit" name="submit_bid" value="{{ loop.index }}">接單</button></td>
+            <td>
+                <form method="post" action="/accept_order">
+                    <input type="hidden" name="order_id" value="{{ rec.order_id }}">
+                    <button type="submit">接單</button>
+                </form>
+            </td>
             
             
         </tr>
