@@ -135,6 +135,16 @@ def accept_order():
         message = f"成功接單 #{order_id}"
     return render_template('allorders.html', message=message, data=DB.getDeliveryOrderList())
 
+@app.route('/owndelivery')
+@login_required
+def own_delivery():
+    """
+    顯示當前登入用戶接的訂單
+    """
+    user_id = session.get('user_id')  # 獲取目前登入的用戶 ID
+    data = DB.getOwnDeliveryOrders()  # 從資料庫中獲取接單的訂單
+    return render_template('owndelivery.html', data=data)
+
     
 if __name__ == '__main__':
     app.run(debug=True)

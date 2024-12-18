@@ -196,6 +196,15 @@ def updateOrderStatus(order_id, status):
     cursor.execute(sql, (status, order_id))
     conn.commit()
 
+def getOwnDeliveryOrders():
+    """
+    查詢當前登入用戶接的訂單
+    """
+    sql = "SELECT * FROM orders WHERE order_status = 'in_delivery'"
+    cursor.execute(sql)
+    return cursor.fetchall()
+
+
 
 # 关闭数据库连接（程序结束时调用）
 def closeConnection():

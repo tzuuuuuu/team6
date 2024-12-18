@@ -142,6 +142,8 @@ CREATE TABLE `delivery_orders` (
   FOREIGN KEY (`delivery_user_id`) REFERENCES `user`(`id`) -- 关联送货员
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+INSERT INTO `delivery_orders` (`delivery_id`, `order_id`, `delivery_user_id`, `pickup_time`, `delivery_time`, `delivery_status`) VALUES
+(1, 1, 323456, '2024-12-18 10:27:44', '2024-12-18 10:43:45', 'accepted');
 -- --------------------------------------------------------
 
 COMMIT;

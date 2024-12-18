@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>我的接單清單</title>
+    <style>
+        body { text-align: center; }
+        #container {
+            width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: aliceblue;
+            border: 2px solid #ccc;
+        }
+        table {
+            width: 100%;
+            margin: 20px auto;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: center;
+        }
+        th {
+            background-color: lightgray;
+        }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <h2>我的接單清單</h2>
+        
+        <table>
+            <tr>
+                <th>訂單編號</th>
+                <th>客戶</th>
+                <th>金額</th>
+                <th>時間</th>
+                <th>狀態</th>
+            </tr>
+            {% if data %}
+                {% for order in data %}
+                <tr>
+                    <td>{{ order.order_id }}</td>
+                    <td>{{ order.user_id }}</td>
+                    <td>${{ order.total_price }}</td>
+                    <td>{{ order.order_date }}</td>
+                    <td>{{ order.order_status }}</td>
+                </tr>
+                {% endfor %}
+            {% else %}
+                <tr>
+                    <td colspan="5">目前沒有接單的訂單。</td>
+                </tr>
+            {% endif %}
+        </table>
+
+        <a href="/allorders">返回所有訂單</a>
+    </div>
+</body>
+</html>
