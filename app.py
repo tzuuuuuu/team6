@@ -126,7 +126,7 @@ def all_orders():
     return render_template('allorders.html', data=data)
     
 @app.route('/accept_order', methods=['POST'])
-@login_required
+#@login_required
 def accept_order():
     order_id = request.form.get('order_id')
     message = ""  # 訊息變數
@@ -136,7 +136,7 @@ def accept_order():
     return render_template('allorders.html', message=message, data=DB.getDeliveryOrderList())
 
 @app.route('/owndelivery')
-@login_required
+#@login_required
 def own_delivery():
     """
     顯示當前登入用戶接的訂單
