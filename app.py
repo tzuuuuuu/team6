@@ -131,6 +131,12 @@ def all_orders():
 def customer():
     return render_template('customer.html')
     
+# 顧客選擇菜色
+@app.route('/select_food')
+@login_required
+def customer():
+    return render_template('select_food.html')
+    
 @app.route('/accept_order', methods=['POST'])
 #@login_required
 def accept_order():
