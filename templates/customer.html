@@ -3,36 +3,62 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>主頁面</title>
+<title>顧客主頁面</title>
 <style type="text/css">
 body {
-background-color: #f0f0f0;
-font-family:標楷體
+    background-color: #f0f0f0;
+    font-family: '標楷體', 'KaiTi', sans-serif;
 }
 #main {
-width: 600px;
-margin: 20px auto;
-padding: 20px;
-background: #ffffff;
-border: 1px solid #ddd;
-border-radius: 5px;
+    width: 600px;
+    margin: 20px auto;
+    padding: 20px;
+    background: #ffffff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
 }
-button {
-margin-top: 10px;
-padding: 3px 7px;
-border: 1px solid gray;
-border-radius: 3px;
-cursor: pointer;
+li a {
+    display: block;
+    width: 125px;
+    height: 40px;
+    line-height: 40px;
+    background-color: #007BFF;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 5px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    margin: 0 auto; <!--按鈕居中-->
 }
-button:hover {
-background-color: #D0D0D0;
+li a:hover {
+    background-color: #0056b3;
+    color: white;
+    font-weight: bold;
+}
+.disabled {
+    pointer-events: none;
+    background-color: #cccccc;
+    color: #666666;
+    opacity: 1;
+}
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+li {
+    margin-bottom: 15px;
 }
 </style>
 </head>
 <body>
 <div id="main">
-<button type="button" style="text-align:center" >餐廳1</button><br/>
-<button type="button" style="text-align:center" >餐廳2(未開放)</button><br/>
-<button type="button" style="text-align:center" >餐廳3(未開放)</button><br/>
+<ul>
+   <li><a href="/allorders">餐廳1</a></li>
+   <li><a href="#" class="disabled">餐廳2(裝飾)</a></li>
+   <li><a href="#" class="disabled">餐廳3(裝飾)</a></li>
+   <li><br/><a href="/logout">登出</a></li>
+</ul>
+</div>
 </body>
 </html>

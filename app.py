@@ -125,6 +125,12 @@ def all_orders():
     data = DB.getDeliveryOrderList()
     return render_template('allorders.html', data=data)
     
+# 顧客主介面
+@app.route('/customer')
+@login_required
+def customer():
+    return render_template('customer.html')
+    
 @app.route('/accept_order', methods=['POST'])
 #@login_required
 def accept_order():
