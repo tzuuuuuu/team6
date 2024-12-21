@@ -2,8 +2,8 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>我的接單清單</title>
-    <style>
+    <title>我的接單清單</title></head>
+    <style type="text/css">
         body { text-align: center; }
         #container {
             width: 900px;
@@ -26,27 +26,27 @@
             background-color: lightgray;
         }
     </style>
-</head>
+
 <body>
     <div id="container">
         <h2>我的接單清單</h2>
         
         <table>
             <tr>
+                <th>外送編號</th>
                 <th>訂單編號</th>
-                <th>客戶</th>
-                <th>金額</th>
-                <th>時間</th>
+                <th>取貨時間</th>
+                <th>外送時間</th>
                 <th>狀態</th>
             </tr>
             {% if data %}
                 {% for order in data %}
                 <tr>
+                    <td>{{ order.delivery_id }}</td>
                     <td>{{ order.order_id }}</td>
-                    <td>{{ order.user_id }}</td>
-                    <td>${{ order.total_price }}</td>
-                    <td>{{ order.order_date }}</td>
-                    <td>{{ order.order_status }}</td>
+                    <td>{{ order.pickup_time}}</td>
+                    <td>{{ order.delivery_time}}</td>
+                    <td>{{ order.delivery_status}}</td>
                 </tr>
                 {% endfor %}
             {% else %}

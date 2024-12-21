@@ -120,7 +120,7 @@ def customer_settlement():
 
 # 查看所有订单
 @app.route('/allorders')
-@login_required
+#@login_required
 def all_orders():
     data = DB.getDeliveryOrderList()
     return render_template('allorders.html', data=data)
@@ -140,12 +140,28 @@ def customer_food():
 @app.route('/accept_order', methods=['POST'])
 #@login_required
 def accept_order():
-    order_id = request.form.get('order_id')
-    message = ""  # 訊息變數
-    if order_id:
+    # 確認當前使用者角色為外送員
+    if session.get('role') != 'delivery':
+        return redirect('/')
+
+    order_id = request.form.get('order_id')  # 從表單取得訂單 ID
+    delivery_user_id = session.get('user_id')  # 取得目前登入外送員的 ID
+    message = ""  # 用於提示訊息
+    
+    if order_id and delivery_user_id:
+        # 更新訂單狀態為 "in_delivery"
         DB.updateOrderStatus(order_id, 'in_delivery')
+
+        # 新增至 delivery_orders
+        DB.addDeliveryOrder(order_id=order_id, delivery_user_id=delivery_user_id)
+
         message = f"成功接單 #{order_id}"
-    return render_template('allorders.html', message=message, data=DB.getDeliveryOrderList())
+    else:
+        message = "接單失敗，請確認訂單 ID 或登入狀態"
+
+    # 重新加載所有可接的訂單列表
+    data = DB.getDeliveryOrderList()
+    return render_template('allorders.html', message=message, data=data)
 
 @app.route('/owndelivery')
 #@login_required

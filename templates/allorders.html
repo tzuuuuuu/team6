@@ -2,32 +2,27 @@
     <meta charset="utf-8">
     <title>AllList</title></head>
     <style type="text/css">
-    body{
-        text-align: center
+    body { text-align: center; }
+        #container {
+            width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: aliceblue;
+            border: 2px solid #ccc;
         }
-      
-    #container{
-        width:900px;
-        border:2px solid #ccc;
-        margin:0px auto;
-        padding:20px;
-        background-color:aliceblue;
-    }
-    
-
-    
-    #container h2{
-        background-color:gray ;
-        color:ivory;
-        padding:6px 15px;
-        letter-spacing: 0.2em;
-        border-bottom:2px;
-        border-left:12px;
-        border-right:12px;
-        border-top:12px;
-        border-radius:50px 50px 50px 50px;
-        padding-left:20px;
-    }
+        table {
+            width: 100%;
+            margin: 20px auto;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: center;
+        }
+        th {
+            background-color: lightgray;
+        }
     </style>
     
     <body>
@@ -44,7 +39,7 @@
     <div style="color: green; font-weight: bold;">{{ message }}</div>
     {% endif %}
 
-    <table align="center" width="700" border="5">
+    <table>
         <tr>
             <th>訂單編號</th>
             <th>客戶</th>

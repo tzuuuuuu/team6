@@ -196,11 +196,23 @@ def updateOrderStatus(order_id, status):
     cursor.execute(sql, (status, order_id))
     conn.commit()
 
+def assignDeliveryOrder(order_id, delivery_user_id):
+    """
+    分配訂單給外送員，插入到 delivery_orders 表
+    """
+    sql = """
+    INSERT INTO delivery_orders (order_id, delivery_user_id, delivery_status, pickedup_time, delivery_time)
+    VALUES (%s, %s, 'accepted', NULL, NULL)
+    """
+    cursor.execute(sql, (order_id, delivery_user_id))
+    conn.commit()
+    return cursor.lastrowid
+
 def getOwnDeliveryOrders():
     """
-    查詢當前登入用戶接的訂單
+    查詢當前登入外送員接的訂單
     """
-    sql = "SELECT * FROM orders WHERE order_status = 'in_delivery'"
+    sql = "SELECT * FROM delivery_orders WHERE delivery_status = 'accepted'"
     cursor.execute(sql)
     return cursor.fetchall()
 
