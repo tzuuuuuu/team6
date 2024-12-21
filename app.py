@@ -134,7 +134,7 @@ def customer():
 # 顧客選擇菜色
 @app.route('/select_food')
 @login_required
-def customer():
+def customer_food():
     return render_template('select_food.html')
     
 @app.route('/accept_order', methods=['POST'])
