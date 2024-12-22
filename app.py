@@ -168,7 +168,9 @@ def customer_cart():
         return redirect('/')
     customer_id = session.get('user_id')
     data = DB.getCart(customer_id)
-    return render_template('cart.html', data=data)
+    total = DB.getCartTotal(customer_id)
+    Total = total['sum']
+    return render_template('cart.html', data=data, Total=Total)
 
 # 顧客將餐點加入購物車
 @app.route('/add_cart/<int:food_id>', methods=['GET', 'POST'])
@@ -192,6 +194,15 @@ def customer_add_cart(food_id):
 def customer_remove_From_Cart(cart_id):
     DB.removeFromCart(cart_id)
     return redirect(url_for('customer_cart'))
+
+# 顧客送出訂單
+@app.route('/add_order')
+@login_required
+def customer_add_order():
+    user_id = session.get('user_id')
+
+    
+    return render_template('add_cart.html', data=data, food_id=food_id)
 
 @app.route('/accept_order', methods=['POST'])
 #@login_required
