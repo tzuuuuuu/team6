@@ -54,7 +54,6 @@ def login():
     password = request.form['password']
     
     user = DB.get_user(username)
-    print("從資料庫取得的使用者資訊:", user)  # 調試
 
     if user and check_password_hash(user['password'], password):
         session['username'] = user['username']
@@ -62,7 +61,6 @@ def login():
         session['role'] = user['role']
         session['loginID'] = user['id']  # ← 新增這行，讓 login_required 能檢查到
 
-        print("登入成功，session 資料:", session)  # 調試
         return redirect('/')  # 登入成功後導回首頁
     else:
         flash("使用者名稱或密碼錯誤")
@@ -143,7 +141,6 @@ def all_orders():
     if session.get('role') != 'delivery':
         return redirect('/')
     data = DB.getDeliveryOrderList()
-    print("所有訂單資料:", data)  # 調試
     return render_template('allorders.html', data=data)
 
 # 顧客主頁
