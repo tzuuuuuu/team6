@@ -1,153 +1,173 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <meta charset="utf-8">
-    <title>我的接單清單</title></head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>我的接單清單</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+    
     <style type="text/css">
-        body { text-align: center; }
-        #container {
-            width: 900px;
-            margin: 0 auto;
-            padding: 20px;
-            background-color: aliceblue;
-            border: 2px solid #ccc;
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 0;
         }
-        table {
-            width: 100%;
+        .container {
+            max-width: 900px;
             margin: 20px auto;
-            border-collapse: collapse;
+            background-color: #ffffff;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
         }
-        th, td {
-            border: 1px solid #ccc;
-            padding: 10px;
-            text-align: center;
+        .text-primary {
+            color: #007bff;
         }
-        th {
-            background-color: lightgray;
-        }
-        .button-container {
-            margin: 20px 0;
+        .text-secondary {
+            color: #6c757d;
         }
         .btn {
             display: inline-block;
-            padding: 10px 20px;
             font-size: 16px;
+            padding: 10px 20px;
             color: #fff;
             background-color: #007bff;
             border: none;
             border-radius: 5px;
             text-decoration: none;
+            margin: 5px 0;
         }
         .btn:hover {
             background-color: #0056b3;
         }
-    </style>
-
+        .logout-btn {
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            padding: 5px 10px;
+            background-color: #dc3545;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+        .logout-btn:hover {
+            background-color: #c82333;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        th, td {
+            border: 1px solid #dee2e6;
+            padding: 10px;
+            text-align: center;
+        }
+        th {
+            background-color: #e9ecef;
+            color: #495057;
+        }
+        .table-success th {
+            background-color: #d4edda;
+        }
+        .table-success td {
+            background-color: #f1f8f5;
+        }
+        .button-container {
+            display: flex;
+            justify-content: center; /* 置中對齊 */
+            gap: 10px; /* 按鈕之間的間距 */
+            margin-top: 20px;
+        }
+    </style>    
+</head>
 <body>
-    <div id="container">
-        <h2>我的已接訂單</h2>
-        
+    <!-- 登出按鈕 -->
+    <button class="logout-btn" onclick="window.location.href='/logout'">登出</button>
+    <div class="container">
+        <h1 class="text-primary text-center">我的接單清單</h1>
+        <h2 class="text-secondary text-center">已接訂單</h2>
+
         <table>
-            <tr>
-                <th>外送編號</th>
-                <th>訂單編號</th>
-                <th>取貨時間</th>
-                <th>外送時間</th>
-                <th>狀態</th>
-                <th>取貨</th>
-            </tr>
-            {% if data %}
-                {% for rec in data %}
+            <thead>
                 <tr>
-                    <td>{{ rec.delivery_id }}</td>
-                    <td>{{ rec.order_id }}</td>
-                    <td>{{ rec.pickup_time}}</td>
-                    <td>{{ rec.delivery_time}}</td>
-                    <td>{{ rec.delivery_status}}</td>
-                    <td>
-                        {% if rec.delivery_status == 'accepted' %}
-                        <!-- 已取貨按鈕 -->
-                        <form action="/update_status" method="POST" style="display:inline;">
-                            <input type="hidden" name="delivery_id" value="{{ rec.delivery_id }}">
-                            <input type="hidden" name="new_status" value="in_delivery">
-                            <button type="submit" class="btn1">已取貨</button>
-                        </form>
-                        {% endif %}
-                    </td>
+                    <th>外送編號</th>
+                    <th>訂單編號</th>
+                    <th>取貨時間</th>
+                    <th>外送時間</th>
+                    <th>狀態</th>
+                    <th>取貨</th>
                 </tr>
-                {% endfor %}
-            {% else %}
-                <tr>
-                    <td colspan="5">目前沒有接單的訂單。</td>
-                </tr>
-            {% endif %}
+            </thead>
+            <tbody>
+                {% if data %}
+                    {% for rec in data %}
+                    <tr>
+                        <td>{{ rec.delivery_id }}</td>
+                        <td>{{ rec.order_id }}</td>
+                        <td>{{ rec.pickup_time }}</td>
+                        <td>{{ rec.delivery_time }}</td>
+                        <td>{{ rec.delivery_status }}</td>
+                        <td>
+                            {% if rec.delivery_status == 'accepted' %}
+                            <form action="/update_status" method="POST">
+                                <input type="hidden" name="delivery_id" value="{{ rec.delivery_id }}">
+                                <input type="hidden" name="new_status" value="in_delivery">
+                                <button type="submit" class="btn btn-sm btn-primary">已取貨</button>
+                            </form>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                {% else %}
+                    <tr>
+                        <td colspan="6">目前沒有接單的訂單。</td>
+                    </tr>
+                {% endif %}
+            </tbody>
         </table>
 
-        <h2>外送中清單</h2>
-        
+        <h2 class="text-secondary text-center">外送中清單</h2>
         <table>
-            <tr>
-                <th>外送編號</th>
-                <th>訂單編號</th>
-                <th>取貨時間</th>
-                <th>外送時間</th>
-                <th>狀態</th>
-                <th>送達</th>
-            </tr>
-            {% if order %}
-                {% for order in order %}
+            <thead>
                 <tr>
-                    <td>{{ order.delivery_id }}</td>
-                    <td>{{ order.order_id }}</td>
-                    <td>{{ order.pickup_time}}</td>
-                    <td>{{ order.delivery_time}}</td>
-                    <td>{{ order.delivery_status}}</td>
-                    <td>
-                        {% if order.delivery_status == 'in_delivery' %}
-                        <!-- 已取貨按鈕 -->
-                        <form action="/update_status" method="POST" style="display:inline;">
-                            <input type="hidden" name="delivery_id" value="{{ order.delivery_id }}">
-                            <input type="hidden" name="new_status" value="completed">
-                            <button type="submit" class="btn1">已送達</button>
-                        </form>
-                        {% endif %}
-                    </td>
+                    <th>外送編號</th>
+                    <th>訂單編號</th>
+                    <th>取貨時間</th>
+                    <th>外送時間</th>
+                    <th>狀態</th>
+                    <th>送達</th>
                 </tr>
-                {% endfor %}
-            {% else %}
-                <tr>
-                    <td colspan="5">目前沒有外送中的訂單。</td>
-                </tr>
-            {% endif %}
+            </thead>
+            <tbody>
+                {% if order %}
+                    {% for rec in order %}
+                    <tr>
+                        <td>{{ rec.delivery_id }}</td>
+                        <td>{{ rec.order_id }}</td>
+                        <td>{{ rec.pickup_time }}</td>
+                        <td>{{ rec.delivery_time }}</td>
+                        <td>{{ rec.delivery_status }}</td>
+                        <td>
+                            {% if rec.delivery_status == 'in_delivery' %}
+                            <form action="/update_status" method="POST">
+                                <input type="hidden" name="delivery_id" value="{{ rec.delivery_id }}">
+                                <input type="hidden" name="new_status" value="completed">
+                                <button type="submit" class="btn btn-sm btn-success">已送達</button>
+                            </form>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                {% else %}
+                    <tr>
+                        <td colspan="6">目前沒有外送中的訂單。</td>
+                    </tr>
+                {% endif %}
+            </tbody>
         </table>
-
-        <h2>已完成清單</h2>
-        
-        <table>
-            <tr>
-                <th>外送編號</th>
-                <th>訂單編號</th>
-                <th>取貨時間</th>
-                <th>外送時間</th>
-                <th>狀態</th>
-            </tr>
-            {% if endorder %}
-                {% for endorder in endorder %}
-                <tr>
-                    <td>{{ endorder.delivery_id }}</td>
-                    <td>{{ endorder.order_id }}</td>
-                    <td>{{ endorder.pickup_time}}</td>
-                    <td>{{ endorder.delivery_time}}</td>
-                    <td>{{ endorder.delivery_status}}</td>
-                </tr>
-                {% endfor %}
-            {% else %}
-                <tr>
-                    <td colspan="5">目前沒有已完成的訂單。</td>
-                </tr>
-            {% endif %}
-        </table>
-
         <div class="button-container">
             <!-- 按钮返回所有订单页面 -->
             <a href="/allorders" class="btn">返回所有訂單</a>
