@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>顧客主頁面</title>
+<title>顧客看訂單詳情</title>
 <style type="text/css">
 body {
     background-color: #f0f0f0;
@@ -18,7 +18,22 @@ body {
     border-radius: 5px;
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
 }
-li a {
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+table, th, td {
+    border: 1px solid #ddd;
+}
+th, td {
+    padding: 8px;
+    text-align: left;
+}
+th {
+    background-color: #f2f2f2;
+}
+a {
     display: block;
     width: 125px;
     height: 40px;
@@ -31,35 +46,36 @@ li a {
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
     margin: 0 auto; <!--按鈕居中-->
 }
-li a:hover {
+a:hover {
     background-color: #0056b3;
     color: white;
     font-weight: bold;
-}
-.disabled {
-    pointer-events: none;
-    background-color: #cccccc;
-    color: #666666;
-    opacity: 1;
-}
-ul {
-    list-style-type: none;
-    padding: 0;
-}
-li {
-    margin-bottom: 15px;
 }
 </style>
 </head>
 <body>
 <div id="main">
-<ul>
-   <li><a href="/select_food">餐廳1</a></li>
-   <li><a href="#" class="disabled">餐廳2(裝飾)</a></li>
-   <li><a href="#" class="disabled">餐廳3(裝飾)</a></li>
-   <li><br/><a href="/check_order">查看訂單狀態</a></li>
-   <li><br/><a href="/logout">登出</a></li>
-</ul>
-</div>
+    
+    <h2>顧客看訂單詳情</h2>
+
+    <table>
+        <tr>
+            <th>餐點名稱</th>
+            <th>餐點數量</th>
+            <th>餐點價格</th>
+            <th>餐點總價</th>
+        </tr>
+        
+        {% for rec in data %}
+        <tr>
+            <td>{{ rec.f_name }}</td>
+            <td>{{ rec.price }}</td>
+            <td>${{ rec.quantity }}</td>
+            <td>{{ rec.sum }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+	<br/><a href="/customer">返回</a>
+    </div>
 </body>
 </html>

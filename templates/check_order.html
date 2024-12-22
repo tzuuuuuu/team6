@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>顧客看菜單</title>
+<title>顧客看訂單</title>
 <style type="text/css">
 body {
     background-color: #f0f0f0;
@@ -56,29 +56,28 @@ a:hover {
 <body>
 <div id="main">
     
-    <h2>菜單</h2>
+    <h2>顧客看訂單</h2>
 
     <table>
         <tr>
-            <th>餐點編號</th>
-            <th>餐點名稱</th>
-            <th>餐點價格</th>
-            <th>餐點詳情</th>
-            <th>加入購物車</th>
+            <th>訂單編號</th>
+            <th>訂單總金額</th>
+            <th>下單時間</th>
+            <th>訂單狀態</th>
+            <th>訂單詳情</th>
         </tr>
         
         {% for rec in data %}
         <tr>
-            <td>{{ rec.food_id }}</td>
-            <td>{{ rec.f_name }}</td>
-            <td>${{ rec.f_price }}</td>
-            <td>{{ rec.f_content }}</td>
-            <td><a href="/add_cart/{{ rec.food_id }}">加入</a></td>
+            <td>{{ rec.order_id }}</td>
+            <td>{{ rec.total_price }}</td>
+            <td>${{ rec.order_date }}</td>
+            <td>{{ rec.order_status }}</td>
+            <td><a href="/check_order_detail/{{ rec.order_id }}">詳情</button></td>
         </tr>
         {% endfor %}
     </table>
-	<br/><a href="/customer">返回</a>
-	<br/><a href="/cart">購物車</a>
+	<br/><a href="/check_order">返回</a>
     </div>
 </body>
 </html>

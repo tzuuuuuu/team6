@@ -199,6 +199,8 @@ def customer_remove_From_Cart(cart_id):
 @app.route('/add_order')
 @login_required
 def customer_add_order():
+    if session.get('role') != 'customer':
+        return redirect('/')
     user_id = session.get('user_id')
     total = DB.getCartTotal(user_id)
     Total = total['sum']
@@ -206,6 +208,25 @@ def customer_add_order():
     DB.createOrder(data)
     
     return redirect(url_for('customer_select_food'))
+    
+# 顧客查看訂單
+@app.route('/check_order')
+@login_required
+def customer_check_order():
+    if session.get('role') != 'customer':
+        return redirect('/')
+    user_id = session.get('user_id')
+    data = DB.getOrderList(user_id)
+    return render_template('check_order.html', data=data)
+    
+# 顧客查看訂單詳情
+@app.route('/check_order_detail/<int:order_id>', methods=['GET', 'POST'])
+@login_required
+def customer_check_order_detail(order_id):
+    if session.get('role') != 'customer':
+        return redirect('/')
+    data = DB.getOrderListDetail(order_id)
+    return render_template('check_order_detail.html', data=data)
 
 
 @app.route('/accept_order', methods=['POST'])

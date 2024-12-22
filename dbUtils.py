@@ -161,6 +161,20 @@ def getOrderList(user_id):
     sql = "SELECT * FROM orders WHERE user_id = %s"
     cursor.execute(sql, (user_id,))
     return cursor.fetchall()
+    
+def getOrderListDetail(order_id):
+    """
+    获取用户的订单詳情
+    """
+    sql = """
+    SELECT food.f_name, order_details.quantity, order_details.price, SUM(order_details.price * order_details.quantity) AS sum
+    FROM order_details 
+    JOIN food ON order_details.food_id = food.food_id 
+    WHERE order_id = %s
+    GROUP BY order_details.food_id, food.f_name, order_details.quantity, order_details.price;
+    """
+    cursor.execute(sql, (order_id,))
+    return cursor.fetchall()
 
 
 # 商家结算相关操作
