@@ -256,6 +256,24 @@ def getOwnDeliveryOrders_end():
 
 
 
+def update_delivery_status_and_time(delivery_id, new_status, field_to_update, time_value):
+    """
+    更新外送訂單的狀態和指定時間欄位。
+    :param delivery_id: 外送編號
+    :param new_status: 新的狀態
+    :param field_to_update: 需要更新的時間欄位（例如 pickup_time 或 delivery_time）
+    :param time_value: 當前時間值
+    """
+    sql = f"""
+            UPDATE delivery_table
+            SET delivery_status = ?, {field_to_update} = ?
+            WHERE delivery_id = ?
+        """
+    cursor.execute(sql, (new_status, time_value, delivery_id))
+    conn.commit()
+
+
+
 # 关闭数据库连接（程序结束时调用）
 def closeConnection():
     """
