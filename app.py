@@ -134,7 +134,7 @@ def customer():
 # 顧客選擇菜色
 @app.route('/select_food')
 #@login_required
-def customer_food():
+def customer_select_food():
     data = DB.getFoodList()
     return render_template('select_food.html', data=data)
     
@@ -146,6 +146,23 @@ def customer_cart():
     #data = DB.getCart(customer_id)
     data = DB.getCart('223456')#我不會用登入，所以先暫時這樣
     return render_template('cart.html', data=data)
+    
+# 顧客增加餐點到購物車
+@app.route('/add_cart/<int:food_id>', methods=['GET', 'POST'])
+#@login_required
+def customer_add_cart(food_id):
+    if request.method == 'POST':
+        user_id='223456'
+        quantity = request.form['quantity']
+        data = {"user_id": user_id, "food_id": food_id, "quantity": quantity}
+        DB.addToCart(data)
+        return redirect(url_for('customer_select_food'))
+    
+    data = DB.addToCartPage(food_id)
+    return render_template('add_cart.html', data=data, food_id=food_id)
+    
+    
+    
     
 @app.route('/accept_order', methods=['POST'])
 #@login_required

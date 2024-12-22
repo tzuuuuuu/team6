@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>顧客購物車</title>
+<title>顧客增加餐點到購物車</title>
 <style type="text/css">
 body {
     background-color: #f0f0f0;
@@ -55,27 +55,18 @@ a:hover {
 </head>
 <body>
 <div id="main">
-    <h2>購物車</h2>
-    <table>
-        <tr>
-            <th>訂單編號</th>
-            <th>餐點名稱</th>
-            <th>餐點價格</th>
-            <th>餐點數量</th>
-            <th>刪除</th>
-        </tr>
-        
-        {% for rec in data %}
-        <tr>
-            <td>{{ rec.cart_id }}</td>
-            <td>{{ rec.f_name }}</td>
-            <td>${{ rec.f_price }}</td>
-            <td>{{ rec.quantity }}</td>
-            <td><button type="submit">刪除</button></td>
-        </tr>
-        {% endfor %}
-    </table>
-	<br/><a href="/select_food">返回</a>
-    </div>
+    <h2>增加餐點</h2>
+    <form action="{{ url_for('customer_add_cart', food_id=food_id) }}" method="post">
+	{% for rec in data %}
+	    <p>餐點編號：{{ rec.food_id }}</p>
+        <p>餐點名稱：{{ rec.f_name }}</p>
+		<p>餐點價格：${{ rec.f_price }}</p>
+    {% endfor %}    
+        <label>數量：</label>
+        <input type="number" step="1" name="quantity" required><br><br>
+        <button type="submit">加入</button><!--用來提交表單-->
+		<a href="/select_food">返回</a>
+    </form>
+</div>
 </body>
 </html>

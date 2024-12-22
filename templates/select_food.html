@@ -58,10 +58,6 @@ a:hover {
     
     <h2>菜單</h2>
 
-    {% if message %}
-    <div style="color: green; font-weight: bold;">{{ message }}</div>
-    {% endif %}
-
     <table>
         <tr>
             <th>餐點編號</th>
@@ -77,7 +73,7 @@ a:hover {
             <td>{{ rec.f_name }}</td>
             <td>${{ rec.f_price }}</td>
             <td>{{ rec.f_content }}</td>
-            <td><button type="submit">加入</button></td>
+            <td><a href="/add_cart/{{ rec.food_id }}">加入</button></td>
         </tr>
         {% endfor %}
     </table>

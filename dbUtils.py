@@ -86,6 +86,14 @@ def addToCart(data):
     sql = "INSERT INTO car (user_id, food_id, quantity) VALUES (%s, %s, %s)"
     cursor.execute(sql, (data['user_id'], data['food_id'], data['quantity']))
     conn.commit()
+    
+def addToCartPage(food_id):
+    """
+    添加菜品的頁面資訊
+    """
+    sql = "SELECT food_id, f_name, f_price FROM food WHERE food_id = %s"
+    cursor.execute(sql, (food_id,))
+    return cursor.fetchall()
 
 def removeFromCart(cart_id):
     """
