@@ -166,9 +166,9 @@ def customer_select_food():
 def customer_cart():
     if session.get('role') != 'customer':
         return redirect('/')
-    customer_id = session.get('user_id')
-    data = DB.getCart(customer_id)
-    total = DB.getCartTotal(customer_id)
+    user_id = session.get('user_id')
+    data = DB.getCart(user_id)
+    total = DB.getCartTotal(user_id)
     Total = total['sum']
     return render_template('cart.html', data=data, Total=Total)
 
@@ -179,9 +179,9 @@ def customer_add_cart(food_id):
     if session.get('role') != 'customer':
         return redirect('/')
     if request.method == 'POST':
-        customer_id = session.get('user_id')
+        user_id = session.get('user_id')
         quantity = request.form['quantity']
-        data = {"user_id": customer_id, "food_id": food_id, "quantity": quantity}
+        data = {"user_id": user_id, "food_id": food_id, "quantity": quantity}
         DB.addToCart(data)
         return redirect(url_for('customer_select_food'))
     
