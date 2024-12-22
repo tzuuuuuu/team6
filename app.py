@@ -200,9 +200,13 @@ def customer_remove_From_Cart(cart_id):
 @login_required
 def customer_add_order():
     user_id = session.get('user_id')
-
+    total = DB.getCartTotal(user_id)
+    Total = total['sum']
+    data = {"user_id": user_id, "total_price": Total}
+    DB.createOrder(data)
     
-    return render_template('add_cart.html', data=data, food_id=food_id)
+    return redirect(url_for('customer_select_food'))
+
 
 @app.route('/accept_order', methods=['POST'])
 #@login_required

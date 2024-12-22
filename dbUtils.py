@@ -121,17 +121,30 @@ def createOrder(data):
     """
     创建订单
     """
+
     # 插入订单信息
     sql_order = "INSERT INTO orders (user_id, total_price, order_date, order_status) VALUES (%s, %s, NOW(), 'pending')"
     cursor.execute(sql_order, (data['user_id'], data['total_price']))
     order_id = cursor.lastrowid
-
+    
+    sql = """
+    SELECT food.food_id, car.quantity, food.f_price
+    FROM car 
+    JOIN food ON car.food_id = food.food_id 
+    WHERE car.user_id = %s
+    """
+    cursor.execute(sql, (data['user_id'],))
+    items = cursor.fetchall()
+    
+    
     # 插入订单详情
-    for item in data['items']:
+    for item in items:
         sql_details = "INSERT INTO order_details (order_id, food_id, quantity, price) VALUES (%s, %s, %s, %s)"
-        cursor.execute(sql_details, (order_id, item['food_id'], item['quantity'], item['price']))
+        cursor.execute(sql_details, (order_id, item['food_id'], item['quantity'], item['f_price']))
+    
+    sql_clear = "DELETE FROM car WHERE user_id = %s" #送出訂單時清空購物車
+    cursor.execute(sql_clear, (data['user_id'],))
     conn.commit()
-    return order_id
 
 def updateOrderStatus(order_id, status):
     """
