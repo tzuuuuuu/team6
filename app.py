@@ -161,6 +161,13 @@ def customer_add_cart(food_id):
     data = DB.addToCartPage(food_id)
     return render_template('add_cart.html', data=data, food_id=food_id)
     
+# 顧客刪除購物車內的餐點
+@app.route('/remove_From_Cart/<int:cart_id>')
+#@login_required
+def customer_remove_From_Cart(cart_id):
+    DB.removeFromCart(cart_id)
+    return redirect(url_for('customer_cart'))
+    
     
     
     
