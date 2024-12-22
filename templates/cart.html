@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>顧客看菜單</title>
+<title>顧客購物車</title>
 <style type="text/css">
 body {
     background-color: #f0f0f0;
@@ -56,7 +56,7 @@ a:hover {
 <body>
 <div id="main">
     
-    <h2>菜單</h2>
+    <h2>購物車</h2>
 
     {% if message %}
     <div style="color: green; font-weight: bold;">{{ message }}</div>
@@ -64,24 +64,24 @@ a:hover {
 
     <table>
         <tr>
-            <th>餐點編號</th>
+            <th>訂單編號</th>
             <th>餐點名稱</th>
             <th>餐點價格</th>
-            <th>餐點詳情</th>
-            <th>加入購物車</th>
+            <th>餐點數量</th>
+            <th>刪除</th>
         </tr>
         
         {% for rec in data %}
         <tr>
-            <td>{{ rec.food_id }}</td>
+            <td>{{ rec.cart_id }}</td>
             <td>{{ rec.f_name }}</td>
             <td>${{ rec.f_price }}</td>
-            <td>{{ rec.f_content }}</td>
-            <td><button type="submit">加入</button></td>
+            <td>{{ rec.quantity }}</td>
+            <td><button type="submit">刪除</button></td>
         </tr>
         {% endfor %}
     </table>
-	<br/><a href="/cart">購物車</a>
+	<br/><a href="/select_food">返回</a>
     </div>
 </body>
 </html>
