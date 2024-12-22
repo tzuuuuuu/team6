@@ -103,6 +103,19 @@ def removeFromCart(cart_id):
     cursor.execute(sql, (cart_id,))
     conn.commit()
 
+def getCartTotal(user_id):
+    """
+    計算購物車總金額
+    """
+    sql = """
+    SELECT SUM(food.f_price * car.quantity) AS sum
+    FROM car
+    JOIN food ON car.food_id = food.food_id
+    WHERE car.user_id = %s
+    """
+    cursor.execute(sql, (user_id,))
+    return cursor.fetchone()
+
 # 订单相关操作
 def createOrder(data):
     """
@@ -135,6 +148,7 @@ def getOrderList(user_id):
     sql = "SELECT * FROM orders WHERE user_id = %s"
     cursor.execute(sql, (user_id,))
     return cursor.fetchall()
+
 
 # 商家结算相关操作
 def getMerchantOrders(merchant_id):

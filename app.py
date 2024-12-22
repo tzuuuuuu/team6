@@ -145,14 +145,17 @@ def customer_cart():
     #customer_id = session.get('user_id')  # 获取顾客ID
     #data = DB.getCart(customer_id)
     data = DB.getCart('223456')#我不會用登入，所以先暫時這樣
-    return render_template('cart.html', data=data)
+    total = DB.getCartTotal('223456')#我不會用登入，所以先暫時這樣
+    Total = total['sum']
+    return render_template('cart.html', data=data,Total=Total)
     
 # 顧客增加餐點到購物車
 @app.route('/add_cart/<int:food_id>', methods=['GET', 'POST'])
 #@login_required
 def customer_add_cart(food_id):
     if request.method == 'POST':
-        user_id='223456'
+        #user_id = session.get('user_id')  # 获取顾客ID
+        user_id='223456'#我不會用登入，所以先暫時這樣
         quantity = request.form['quantity']
         data = {"user_id": user_id, "food_id": food_id, "quantity": quantity}
         DB.addToCart(data)
@@ -169,7 +172,14 @@ def customer_remove_From_Cart(cart_id):
     return redirect(url_for('customer_cart'))
     
     
+# 顧客送出訂單
+@app.route('/add_order')
+#@login_required
+def customer_add_order():
+    #user_id = session.get('user_id')  # 获取顾客ID
+    user_id='223456'#我不會用登入，所以先暫時這樣
     
+    return render_template('add_cart.html', data=data, food_id=food_id)
     
 @app.route('/accept_order', methods=['POST'])
 #@login_required
