@@ -29,7 +29,7 @@
 
 <body>
     <div id="container">
-        <h2>我的接單清單</h2>
+        <h2>我的已接訂單</h2>
         
         <table>
             <tr>
@@ -40,7 +40,34 @@
                 <th>狀態</th>
             </tr>
             {% if data %}
-                {% for order in data %}
+                {% for rec in data %}
+                <tr>
+                    <td>{{ rec.delivery_id }}</td>
+                    <td>{{ rec.order_id }}</td>
+                    <td>{{ rec.pickup_time}}</td>
+                    <td>{{ rec.delivery_time}}</td>
+                    <td>{{ rec.delivery_status}}</td>
+                </tr>
+                {% endfor %}
+            {% else %}
+                <tr>
+                    <td colspan="5">目前沒有接單的訂單。</td>
+                </tr>
+            {% endif %}
+        </table>
+
+        <h2>外送中清單</h2>
+        
+        <table>
+            <tr>
+                <th>外送編號</th>
+                <th>訂單編號</th>
+                <th>取貨時間</th>
+                <th>外送時間</th>
+                <th>狀態</th>
+            </tr>
+            {% if order %}
+                {% for order in order %}
                 <tr>
                     <td>{{ order.delivery_id }}</td>
                     <td>{{ order.order_id }}</td>
@@ -51,7 +78,34 @@
                 {% endfor %}
             {% else %}
                 <tr>
-                    <td colspan="5">目前沒有接單的訂單。</td>
+                    <td colspan="5">目前沒有外送中的訂單。</td>
+                </tr>
+            {% endif %}
+        </table>
+
+        <h2>已完成清單</h2>
+        
+        <table>
+            <tr>
+                <th>外送編號</th>
+                <th>訂單編號</th>
+                <th>取貨時間</th>
+                <th>外送時間</th>
+                <th>狀態</th>
+            </tr>
+            {% if endorder %}
+                {% for endorder in endorder %}
+                <tr>
+                    <td>{{ endorder.delivery_id }}</td>
+                    <td>{{ endorder.order_id }}</td>
+                    <td>{{ endorder.pickup_time}}</td>
+                    <td>{{ endorder.delivery_time}}</td>
+                    <td>{{ endorder.delivery_status}}</td>
+                </tr>
+                {% endfor %}
+            {% else %}
+                <tr>
+                    <td colspan="5">目前沒有已完成的訂單。</td>
                 </tr>
             {% endif %}
         </table>
