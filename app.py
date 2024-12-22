@@ -127,15 +127,25 @@ def all_orders():
     
 # 顧客主介面
 @app.route('/customer')
-@login_required
+#@login_required
 def customer():
     return render_template('customer.html')
     
 # 顧客選擇菜色
 @app.route('/select_food')
-@login_required
+#@login_required
 def customer_food():
-    return render_template('select_food.html')
+    data = DB.getFoodList()
+    return render_template('select_food.html', data=data)
+    
+# 顧客購物車
+@app.route('/cart')
+#@login_required
+def customer_cart():
+    #customer_id = session.get('user_id')  # 获取顾客ID
+    #data = DB.getCart(customer_id)
+    data = DB.getCart('223456')#我不會用登入，所以先暫時這樣
+    return render_template('cart.html', data=data)
     
 @app.route('/accept_order', methods=['POST'])
 #@login_required
