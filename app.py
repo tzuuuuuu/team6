@@ -127,22 +127,32 @@ def all_orders():
     
 # 顧客主介面
 @app.route('/customer')
-@login_required
+#@login_required
 def customer():
     return render_template('customer.html')
     
 # 顧客選擇菜色
 @app.route('/select_food')
-@login_required
+#@login_required
 def customer_food():
-    return render_template('select_food.html')
+    data = DB.getFoodList()
+    return render_template('select_food.html', data=data)
+    
+# 顧客購物車
+@app.route('/cart')
+#@login_required
+def customer_cart():
+    #customer_id = session.get('user_id')  # 获取顾客ID
+    #data = DB.getCart(customer_id)
+    data = DB.getCart('223456')#我不會用登入，所以先暫時這樣
+    return render_template('cart.html', data=data)
     
 @app.route('/accept_order', methods=['POST'])
 #@login_required
 def accept_order():
     # 確認當前使用者角色為外送員
-    if session.get('role') != 'delivery':
-        return redirect('/')
+    #if session.get('role') != 'delivery':
+        #return redirect('/')
 
     order_id = request.form.get('order_id')  # 從表單取得訂單 ID
     delivery_user_id = session.get('user_id')  # 取得目前登入外送員的 ID
@@ -169,9 +179,11 @@ def own_delivery():
     """
     顯示當前登入用戶接的訂單
     """
-    user_id = session.get('user_id')  # 獲取目前登入的用戶 ID
-    data = DB.getOwnDeliveryOrders()  # 從資料庫中獲取接單的訂單
-    return render_template('owndelivery.html', data=data)
+    #user_id = session.get('user_id')  # 獲取目前登入的用戶 ID
+    data = DB.getOwnDeliveryOrders()
+    order=DB.getOwnDeliveryOrders_ing()
+    endorder=DB.getOwnDeliveryOrders_end()  # 從資料庫中獲取接單的訂單
+    return render_template('owndelivery.html', data=data,order=order,endorder=endorder)
 
     
 if __name__ == '__main__':
