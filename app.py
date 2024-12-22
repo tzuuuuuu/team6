@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, session, redirect, url_for
 from werkzeug.security import generate_password_hash, check_password_hash
 from functools import wraps
+from datetime import datetime
 import dbUtils as DB
 
 # 创建 Flask 应用
@@ -201,6 +202,54 @@ def own_delivery():
     order=DB.getOwnDeliveryOrders_ing()
     endorder=DB.getOwnDeliveryOrders_end()  # 從資料庫中獲取接單的訂單
     return render_template('owndelivery.html', data=data,order=order,endorder=endorder)
+
+@app.route('/update_status', methods=['POST'])
+#@login_required
+def update_status():
+    # 確保只有配送人員可以訪問此路由
+    if session.get('role') != 'delivery':
+        return redirect('/')
+
+    # 接收表單提交的數據
+    delivery_id = request.form.get('delivery_id')
+    new_status = request.form.get('new_status')
+
+    # 檢查是否有必要的參數
+    if not delivery_id or not new_status:
+        return redirect('/owndelivery')  # 返回外送清單頁面
+
+    # 獲取當前時間
+    current_time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+
+    # 根據狀態執行更新
+    if new_status == 'in_delivery':
+        # 更新狀態為 "in_delivery" 並設置取貨時間
+        DB.update_delivery_status_and_time(
+            delivery_id=delivery_id,
+            new_status=new_status,
+            field_to_update='pickup_time',
+            time_value=current_time
+        )
+        message = f"外送訂單 #{delivery_id} 狀態更新為 'in_delivery'"
+    elif new_status == 'completed':
+        # 更新狀態為 "completed" 並設置外送時間
+        DB.update_delivery_status_and_time(
+            delivery_id=delivery_id,
+            new_status=new_status,
+            field_to_update='delivery_time',
+            time_value=current_time
+        )
+        message = f"外送訂單 #{delivery_id} 狀態更新為 'completed'"
+    else:
+        message = "狀態更新失敗，無效的請求"
+
+    # 您可以選擇將 message 顯示在前端（這裡只是打印，具體看需求）
+    print(message)
+
+    # 返回外送清單頁面
+    # 重新載入已接訂單頁面
+    return redirect('/owndelivery',message=message)
+
 
     
 if __name__ == '__main__':

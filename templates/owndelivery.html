@@ -54,6 +54,7 @@
                 <th>取貨時間</th>
                 <th>外送時間</th>
                 <th>狀態</th>
+                <th>取貨</th>
             </tr>
             {% if data %}
                 {% for rec in data %}
@@ -63,6 +64,16 @@
                     <td>{{ rec.pickup_time}}</td>
                     <td>{{ rec.delivery_time}}</td>
                     <td>{{ rec.delivery_status}}</td>
+                    <td>
+                        {% if rec.delivery_status == 'accepted' %}
+                        <!-- 已取貨按鈕 -->
+                        <form action="/update_status" method="POST" style="display:inline;">
+                            <input type="hidden" name="delivery_id" value="{{ rec.delivery_id }}">
+                            <input type="hidden" name="new_status" value="in_delivery">
+                            <button type="submit" class="btn1">已取貨</button>
+                        </form>
+                        {% endif %}
+                    </td>
                 </tr>
                 {% endfor %}
             {% else %}
@@ -81,6 +92,7 @@
                 <th>取貨時間</th>
                 <th>外送時間</th>
                 <th>狀態</th>
+                <th>送達</th>
             </tr>
             {% if order %}
                 {% for order in order %}
@@ -90,6 +102,16 @@
                     <td>{{ order.pickup_time}}</td>
                     <td>{{ order.delivery_time}}</td>
                     <td>{{ order.delivery_status}}</td>
+                    <td>
+                        {% if order.delivery_status == 'in_delivery' %}
+                        <!-- 已取貨按鈕 -->
+                        <form action="/update_status" method="POST" style="display:inline;">
+                            <input type="hidden" name="delivery_id" value="{{ order.delivery_id }}">
+                            <input type="hidden" name="new_status" value="completed">
+                            <button type="submit" class="btn1">已送達</button>
+                        </form>
+                        {% endif %}
+                    </td>
                 </tr>
                 {% endfor %}
             {% else %}
