@@ -57,11 +57,10 @@ def login():
     print("從資料庫取得的使用者資訊:", user)  # 調試
 
     if user and check_password_hash(user['password'], password):
-        # ↓↓↓ 在這裡多加一行 session['loginID']，讓 login_required 能檢查到 ↓↓↓
         session['username'] = user['username']
         session['user_id'] = user['id']
         session['role'] = user['role']
-        session['loginID'] = user['id']  # ← 新增這行
+        session['loginID'] = user['id']  # ← 新增這行，讓 login_required 能檢查到
 
         print("登入成功，session 資料:", session)  # 調試
         return redirect('/')  # 登入成功後導回首頁
@@ -189,26 +188,22 @@ def customer_add_cart(food_id):
     
     data = DB.addToCartPage(food_id)
     return render_template('add_cart.html', data=data, food_id=food_id)
-<<<<<<< HEAD
 
-=======
-    
+# ---- 在此以下為合併的部分 ----
+
 # 顧客刪除購物車內的餐點
 @app.route('/remove_From_Cart/<int:cart_id>')
 #@login_required
 def customer_remove_From_Cart(cart_id):
     DB.removeFromCart(cart_id)
     return redirect(url_for('customer_cart'))
-    
-    
-    
-    
+
 @app.route('/accept_order', methods=['POST'])
 #@login_required
 def accept_order():
     # 確認當前使用者角色為外送員
     #if session.get('role') != 'delivery':
-        #return redirect('/')
+    #    return redirect('/')
 
     order_id = request.form.get('order_id')  # 從表單取得訂單 ID
     delivery_user_id = session.get('user_id')  # 取得目前登入外送員的 ID
@@ -235,11 +230,11 @@ def own_delivery():
     """
     顯示當前登入用戶接的訂單
     """
-    #user_id = session.get('user_id')  # 獲取目前登入的用戶 ID
+    # user_id = session.get('user_id')  # 獲取目前登入的用戶 ID
     data = DB.getOwnDeliveryOrders()
-    order=DB.getOwnDeliveryOrders_ing()
-    endorder=DB.getOwnDeliveryOrders_end()  # 從資料庫中獲取接單的訂單
-    return render_template('owndelivery.html', data=data,order=order,endorder=endorder)
+    order = DB.getOwnDeliveryOrders_ing()
+    endorder = DB.getOwnDeliveryOrders_end()  # 從資料庫中獲取接單的訂單
+    return render_template('owndelivery.html', data=data, order=order, endorder=endorder)
 
 @app.route('/update_status', methods=['POST'])
 #@login_required
@@ -284,12 +279,10 @@ def update_status():
     # 您可以選擇將 message 顯示在前端（這裡只是打印，具體看需求）
     print(message)
 
-    # 返回外送清單頁面
-    # 重新載入已接訂單頁面
-    return redirect('/owndelivery',message=message)
+    # 返回外送清單頁面 (已接訂單頁)
+    return redirect('/owndelivery')
 
+# ---- 合併結束 ----
 
-    
->>>>>>> 1a4f3edd1c57d32a7ae1a1583da8e99687f09cdf
 if __name__ == '__main__':
     app.run(debug=True)
