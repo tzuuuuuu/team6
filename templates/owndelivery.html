@@ -25,22 +25,6 @@
         th {
             background-color: lightgray;
         }
-        .button-container {
-            margin: 20px 0;
-        }
-        .btn {
-            display: inline-block;
-            padding: 10px 20px;
-            font-size: 16px;
-            color: #fff;
-            background-color: #007bff;
-            border: none;
-            border-radius: 5px;
-            text-decoration: none;
-        }
-        .btn:hover {
-            background-color: #0056b3;
-        }
     </style>
 
 <body>
@@ -126,12 +110,7 @@
             {% endif %}
         </table>
 
-        <div class="button-container">
-            <!-- 按钮返回所有订单页面 -->
-            <a href="/allorders" class="btn">返回所有訂單</a>
-            <!-- 按钮跳转到外卖小哥结算页面 -->
-            <a href="/delivery/settlement" class="btn">前往結算頁面</a>
-        </div>
+        <a href="/allorders">返回所有訂單</a>
     </div>
 </body>
 </html>
