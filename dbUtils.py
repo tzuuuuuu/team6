@@ -204,7 +204,7 @@ def updateOrderStatus(order_id, status):
     cursor.execute(sql, (status, order_id))
     conn.commit()
 
-def assignDeliveryOrder(order_id, delivery_user_id):
+def addDeliveryOrder(order_id, delivery_user_id):
     """
     分配訂單給外送員，插入到 delivery_orders 表
     """
@@ -221,6 +221,22 @@ def getOwnDeliveryOrders():
     查詢當前登入外送員接的訂單
     """
     sql = "SELECT * FROM delivery_orders WHERE delivery_status = 'accepted'"
+    cursor.execute(sql)
+    return cursor.fetchall()
+
+def getOwnDeliveryOrders_ing():
+    """
+    查詢當前登入外送員外送中的訂單
+    """
+    sql = "SELECT * FROM delivery_orders WHERE delivery_status = 'in_delivery'"
+    cursor.execute(sql)
+    return cursor.fetchall()
+
+def getOwnDeliveryOrders_end():
+    """
+    查詢當前登入外送員已完成的訂單
+    """
+    sql = "SELECT * FROM delivery_orders WHERE delivery_status = 'completed'"
     cursor.execute(sql)
     return cursor.fetchall()
 
