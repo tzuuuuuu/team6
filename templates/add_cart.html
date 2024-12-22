@@ -51,6 +51,26 @@ a:hover {
     color: white;
     font-weight: bold;
 }
+button {
+    display: block;
+    width: 125px;
+    height: 40px;
+    line-height: 40px;
+    background-color: #007BFF;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 5px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    margin: 0 auto;
+	border: none;
+    outline: none;
+}
+button:hover {
+    background-color: #0056b3;
+    color: white;
+    font-weight: bold;
+}
 </style>
 </head>
 <body>
@@ -64,7 +84,7 @@ a:hover {
     {% endfor %}    
         <label>數量：</label>
         <input type="number" step="1" name="quantity" required><br><br>
-        <button type="submit">加入</button><!--用來提交表單-->
+        <button type="submit">加入</button><br/>
 		<a href="/select_food">返回</a>
     </form>
 </div>

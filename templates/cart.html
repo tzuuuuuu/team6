@@ -71,7 +71,7 @@ a:hover {
             <td>{{ rec.f_name }}</td>
             <td>${{ rec.f_price }}</td>
             <td>{{ rec.quantity }}</td>
-            <td><button type="submit">刪除</button></td>
+			<td><a href="/remove_From_Cart/{{ rec.cart_id }}">刪除</button></td>
         </tr>
         {% endfor %}
     </table>

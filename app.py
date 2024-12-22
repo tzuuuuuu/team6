@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, session, redirect, url_for, flash
 from werkzeug.security import generate_password_hash, check_password_hash
 from functools import wraps
+from datetime import datetime
 import dbUtils as DB
 
 # 建立 Flask 應用
@@ -188,6 +189,107 @@ def customer_add_cart(food_id):
     
     data = DB.addToCartPage(food_id)
     return render_template('add_cart.html', data=data, food_id=food_id)
+<<<<<<< HEAD
 
+=======
+    
+# 顧客刪除購物車內的餐點
+@app.route('/remove_From_Cart/<int:cart_id>')
+#@login_required
+def customer_remove_From_Cart(cart_id):
+    DB.removeFromCart(cart_id)
+    return redirect(url_for('customer_cart'))
+    
+    
+    
+    
+@app.route('/accept_order', methods=['POST'])
+#@login_required
+def accept_order():
+    # 確認當前使用者角色為外送員
+    #if session.get('role') != 'delivery':
+        #return redirect('/')
+
+    order_id = request.form.get('order_id')  # 從表單取得訂單 ID
+    delivery_user_id = session.get('user_id')  # 取得目前登入外送員的 ID
+    message = ""  # 用於提示訊息
+    
+    if order_id and delivery_user_id:
+        # 更新訂單狀態為 "in_delivery"
+        DB.updateOrderStatus(order_id, 'in_delivery')
+
+        # 新增至 delivery_orders
+        DB.addDeliveryOrder(order_id=order_id, delivery_user_id=delivery_user_id)
+
+        message = f"成功接單 #{order_id}"
+    else:
+        message = "接單失敗，請確認訂單 ID 或登入狀態"
+
+    # 重新加載所有可接的訂單列表
+    data = DB.getDeliveryOrderList()
+    return render_template('allorders.html', message=message, data=data)
+
+@app.route('/owndelivery')
+#@login_required
+def own_delivery():
+    """
+    顯示當前登入用戶接的訂單
+    """
+    #user_id = session.get('user_id')  # 獲取目前登入的用戶 ID
+    data = DB.getOwnDeliveryOrders()
+    order=DB.getOwnDeliveryOrders_ing()
+    endorder=DB.getOwnDeliveryOrders_end()  # 從資料庫中獲取接單的訂單
+    return render_template('owndelivery.html', data=data,order=order,endorder=endorder)
+
+@app.route('/update_status', methods=['POST'])
+#@login_required
+def update_status():
+    # 確保只有配送人員可以訪問此路由
+    if session.get('role') != 'delivery':
+        return redirect('/')
+
+    # 接收表單提交的數據
+    delivery_id = request.form.get('delivery_id')
+    new_status = request.form.get('new_status')
+
+    # 檢查是否有必要的參數
+    if not delivery_id or not new_status:
+        return redirect('/owndelivery')  # 返回外送清單頁面
+
+    # 獲取當前時間
+    current_time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+
+    # 根據狀態執行更新
+    if new_status == 'in_delivery':
+        # 更新狀態為 "in_delivery" 並設置取貨時間
+        DB.update_delivery_status_and_time(
+            delivery_id=delivery_id,
+            new_status=new_status,
+            field_to_update='pickup_time',
+            time_value=current_time
+        )
+        message = f"外送訂單 #{delivery_id} 狀態更新為 'in_delivery'"
+    elif new_status == 'completed':
+        # 更新狀態為 "completed" 並設置外送時間
+        DB.update_delivery_status_and_time(
+            delivery_id=delivery_id,
+            new_status=new_status,
+            field_to_update='delivery_time',
+            time_value=current_time
+        )
+        message = f"外送訂單 #{delivery_id} 狀態更新為 'completed'"
+    else:
+        message = "狀態更新失敗，無效的請求"
+
+    # 您可以選擇將 message 顯示在前端（這裡只是打印，具體看需求）
+    print(message)
+
+    # 返回外送清單頁面
+    # 重新載入已接訂單頁面
+    return redirect('/owndelivery',message=message)
+
+
+    
+>>>>>>> 1a4f3edd1c57d32a7ae1a1583da8e99687f09cdf
 if __name__ == '__main__':
     app.run(debug=True)
