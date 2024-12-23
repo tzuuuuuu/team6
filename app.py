@@ -172,7 +172,7 @@ def merchant_menu():
     # 獲取商家菜品列表
     menu_items = DB.getMerchantMenu(merchant_id)
 
-    return render_template('merchant_menu.html', menu_items=menu_items, merchant_name=session['username'])
+    return render_template('merchant.html', menu_items=menu_items, merchant_name=session['username'])
 
 # 商家刪除菜品
 @app.route('/merchant/delete_food/<int:food_id>', methods=['POST'])
