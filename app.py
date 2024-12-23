@@ -134,10 +134,10 @@ def customer_settlement():
 
 # 查看所有訂單 (外送員)
 @app.route('/allorders')
-@login_required
+#@login_required
 def all_orders():
-    if session.get('role') != 'delivery':
-        return redirect('/')
+    #if session.get('role') != 'delivery':
+        #return redirect('/')
     data = DB.getDeliveryOrderList()
     delivery_name = session.get('username')  # 從 session 中獲取名稱
     return render_template('allorders.html', data=data, delivery_name=delivery_name)
