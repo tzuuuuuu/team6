@@ -184,13 +184,42 @@ def getOrderListDetail(order_id):
     sql = """
     SELECT food.f_name, order_details.quantity, order_details.price, SUM(order_details.price * order_details.quantity) AS sum
     FROM order_details 
-    JOIN food ON order_details.food_id = food.food_id 
+    JOIN food ON order_details.food_id = food.food_id
     WHERE order_id = %s
     GROUP BY order_details.food_id, food.f_name, order_details.quantity, order_details.price;
     """
     cursor.execute(sql, (order_id,))
     return cursor.fetchall()
 
+def getReviewNeed(order_id):
+    """
+    获取評論頁面所需資訊
+    """
+    sql = "SELECT order_id, total_price FROM orders WHERE order_id = %s"
+    cursor.execute(sql, (order_id,))
+    return cursor.fetchall()
+    
+def addToReview(data):
+    """
+    把評論加入資料庫
+    """
+    sql = "INSERT INTO review (user_id, order_id, review_date, grade, review) VALUES (%s, %s, NOW(), %s, %s)"
+    cursor.execute(sql, (data['user_id'], data['order_id'], data['grade'], data['review']))
+    conn.commit()
+
+def getReview():
+    """
+    获取評論
+    """
+    sql = """
+    SELECT review.review_id, user.username, orders.total_price, review.review_date, review.grade, review.review
+    FROM review 
+    JOIN user ON user.id = review.user_id 
+    JOIN orders ON orders.order_id = review.order_id 
+    ORDER BY review.grade DESC, review.review_id ASC
+    """
+    cursor.execute(sql)
+    return cursor.fetchall()
 
 # 商家结算相关操作
 def getMerchantOrders(merchant_id):

@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>顧客看菜單</title>
+<title>顧客看店家評論</title>
 <style type="text/css">
 /* 基本樣式 */
 body {
@@ -77,7 +77,16 @@ a:hover, .btn:hover {
     font-weight: bold;
 }
 
-/* 返回與購物車按鈕區域 */
+/* 總金額樣式 */
+.total {
+    font-size: 20px;
+    font-weight: bold;
+    text-align: right;
+    margin-top: 20px;
+    color: #333333;
+}
+
+/* 返回與送出按鈕區域 */
 .buttons {
     display: flex;
     justify-content: center;
@@ -89,37 +98,36 @@ a:hover, .btn:hover {
 <body>
 <div id="main">
     <!-- 頁面標題 -->
-    <h2>菜單</h2>
+    <h2>店家評論</h2>
 
-    <!-- 菜單表格 -->
+    <!-- 購物車表格 -->
     <table>
         <thead>
             <tr>
-                <th>餐點編號</th>
-                <th>餐點名稱</th>
-                <th>餐點價格</th>
-                <th>餐點詳情</th>
-                <th>加入購物車</th>
+                <th>評論編號</th>
+                <th>評論者</th>
+				<th>當次消費</th>
+				<th>消費日期</th>
+                <th>評價(1~5星)</th>
+                <th>評論</th>
             </tr>
         </thead>
         <tbody>
             {% for rec in data %}
             <tr>
-                <td>{{ rec.food_id }}</td>
-                <td>{{ rec.f_name }}</td>
-                <td>${{ rec.f_price }}</td>
-                <td>{{ rec.f_content }}</td>
-                <td><a href="/add_cart/{{ rec.food_id }}" class="btn">加入</a></td>
+                <td>{{ rec.review_id }}</td>
+                <td>{{ rec.username }}</td>
+                <td>${{ rec.total_price }}</td>
+				<td>{{ rec.review_date }}</td>
+                <td>{{ rec.grade }}</td>
+                <td>{{ rec.review }}</td>
             </tr>
             {% endfor %}
         </tbody>
     </table>
-
-    <!-- 返回與購物車按鈕 -->
+    <!-- 返回與送出按鈕 -->
     <div class="buttons">
-        <a href="/check_review" class="btn">店家評價</a>
-		<a href="/customer" class="btn">返回</a>
-        <a href="/cart" class="btn">購物車</a>
+        <a href="/select_food" class="btn">返回</a>
     </div>
 </div>
 </body>

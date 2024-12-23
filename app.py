@@ -233,9 +233,37 @@ def customer_check_order_detail(order_id):
 def customer_pickup_order(order_id):
     if session.get('role') != 'customer':
         return redirect('/')
+    status = 'completed' 
+    DB.updateOrderStatus(order_id, status)
+    DB.updateDeliveryOrderStatus(order_id, status)
+    return redirect(url_for('customer_review', order_id=order_id))
+    
+# 顧客發表評論
+@app.route('/review/<int:order_id>', methods=['GET', 'POST'])
+@login_required
+def customer_review(order_id):
+    if session.get('role') != 'customer':
+        return redirect('/')
+    if request.method == 'POST':
+        user_id = session.get('user_id')
+        grade = request.form['grade']
+        review = request.form['review']
+        data = {"user_id": user_id, "order_id": order_id, "grade": grade, "review": review}
+        DB.addToReview(data)
+        return redirect(url_for('customer'))
+    data = DB.getReviewNeed(order_id)
+    return render_template('review.html', data=data, order_id=order_id)
+
+# 顧客觀看評論
+@app.route('/check_review')
+@login_required
+def customer_check_review():
+    if session.get('role') != 'customer':
+        return redirect('/')
     user_id = session.get('user_id')
-    data = DB.getOrderList(user_id)
-    return render_template('check_order.html', data=data)
+    data = DB.getReview()
+    return render_template('check_review.html', data=data)
+
 
 @app.route('/accept_order', methods=['POST'])
 #@login_required
