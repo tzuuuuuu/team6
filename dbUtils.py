@@ -296,8 +296,6 @@ def getOwnDeliveryOrders_end():
     cursor.execute(sql)
     return cursor.fetchall()
 
-
-
 def update_delivery_status_and_time(delivery_id, new_status, field_to_update, time_value):
     """
     更新外送訂單的狀態和指定時間欄位。
@@ -313,8 +311,6 @@ def update_delivery_status_and_time(delivery_id, new_status, field_to_update, ti
         """
     cursor.execute(sql, (new_status, time_value, delivery_id))
     conn.commit()
-
-
 
 # 关闭数据库连接（程序结束时调用）
 def closeConnection():
