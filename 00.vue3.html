@@ -1,0 +1,121 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>外送平台商家系統</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .menu, .orders, .notifications {
+            margin-bottom: 30px;
+        }
+        .menu-item, .order-item, .notification-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+        button {
+            padding: 5px 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .button-danger {
+            background-color: #f44336;
+        }
+        .button-danger:hover {
+            background-color: #d32f2f;
+        }
+    </style>
+</head>
+<body>
+    <h1>外送平台商家系統</h1>
+
+    <div class="menu">
+        <h2>上架菜單</h2>
+        <input type="text" id="new-item-name" placeholder="新增食物名稱">
+        <button onclick="addMenuItem()">新增到菜單</button>
+        <div id="menu-list">
+            <!-- Example menu items -->
+        </div>
+    </div>
+
+    <div class="orders">
+        <h2>確認收單</h2>
+        <ul id="order-list">
+            <!-- Orders will be added here -->
+        </ul>
+    </div>
+
+    <div class="notifications">
+        <h2>通知取餐</h2>
+        <ul id="notification-list">
+            <!-- Notifications will be added here -->
+        </ul>
+    </div>
+
+    <script>
+        function addMenuItem() {
+            const newItemName = document.getElementById('new-item-name').value.trim();
+            if (newItemName === '') {
+                alert('請輸入食物名稱！');
+                return;
+            }
+
+            const menuList = document.getElementById('menu-list');
+            const menuItem = document.createElement('div');
+            menuItem.className = 'menu-item';
+            menuItem.innerHTML = `<span>${newItemName}</span> <button onclick="addToOrders('${newItemName}')">加入訂單</button>`;
+            menuList.appendChild(menuItem);
+
+            document.getElementById('new-item-name').value = '';
+        }
+
+        function addToOrders(item) {
+            const orderList = document.getElementById('order-list');
+            const listItem = document.createElement('li');
+            listItem.className = 'order-item';
+
+            listItem.innerHTML = `${item} 
+                <button onclick="confirmOrder(this, '${item}')">確認收單</button>
+                <button class="button-danger" onclick="rejectOrder(this, '${item}')">拒絕收單</button>`;
+            orderList.appendChild(listItem);
+        }
+
+        function confirmOrder(button, itemName) {
+            const orderItem = button.parentElement;
+
+            // Move order to notifications
+            const notificationList = document.getElementById('notification-list');
+            const notificationItem = document.createElement('li');
+            notificationItem.className = 'notification-item';
+            notificationItem.textContent = `${itemName} - 已通知外賣小哥取餐`;
+            notificationList.appendChild(notificationItem);
+
+            // Remove from orders
+            orderItem.remove();
+        }
+
+        function rejectOrder(button, itemName) {
+            const orderItem = button.parentElement;
+
+            // Move order to notifications
+            const notificationList = document.getElementById('notification-list');
+            const notificationItem = document.createElement('li');
+            notificationItem.className = 'notification-item';
+            notificationItem.textContent = `${itemName} - 沒貨了，已通知外賣小哥`;
+            notificationList.appendChild(notificationItem);
+
+            // Remove from orders
+            orderItem.remove();
+        }
+    </script>
+</body>
+</html>
