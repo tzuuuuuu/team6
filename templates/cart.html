@@ -93,6 +93,13 @@ a:hover, .btn:hover {
     gap: 20px; /* 按鈕之間的距離 */
     margin-top: 20px;
 }
+/* 禁用按鈕樣式 */
+.btn.disabled {
+    background-color: #cccccc;
+    color: #666666;
+    pointer-events: none;
+    cursor: not-allowed;
+}
 </style>
 </head>
 <body>
@@ -101,6 +108,7 @@ a:hover, .btn:hover {
     <h2>購物車</h2>
 
     <!-- 購物車表格 -->
+	{% if data|length > 0 %}
     <table>
         <thead>
             <tr>
@@ -123,6 +131,9 @@ a:hover, .btn:hover {
             {% endfor %}
         </tbody>
     </table>
+	{% else %}
+    <p style="text-align: center; font-size: 16px; color: #666;">您的購物車目前是空的。</p>
+    {% endif %}
 
     <!-- 總金額 -->
     <div class="total">
@@ -132,7 +143,11 @@ a:hover, .btn:hover {
     <!-- 返回與送出按鈕 -->
     <div class="buttons">
         <a href="/select_food" class="btn">返回</a>
+        {% if data|length > 0 %}
         <a href="/add_order" class="btn">送出</a>
+        {% else %}
+        <a href="#" class="btn disabled">送出</a>
+        {% endif %}
     </div>
 </div>
 </body>
