@@ -154,6 +154,14 @@ def updateOrderStatus(order_id, status):
     cursor.execute(sql, (status, order_id))
     conn.commit()
     
+def updateDeliveryOrderStatus(order_id, status):
+    """
+    更新送貨订单状态
+    """
+    sql = "UPDATE delivery_orders SET delivery_status = %s WHERE order_id = %s"
+    cursor.execute(sql, (status, order_id))
+    conn.commit()
+    
 def getOrderList(user_id):
     """
     获取用户的订单列表，
@@ -164,7 +172,7 @@ def getOrderList(user_id):
     SELECT o.*, d.delivery_status
     FROM orders o
     LEFT JOIN delivery_orders d ON o.order_id = d.order_id
-    WHERE o.user_id = %s
+    WHERE o.user_id = %s AND o.order_status != 'completed'
     """
     cursor.execute(sql_orders, (user_id,))
     return cursor.fetchall()
