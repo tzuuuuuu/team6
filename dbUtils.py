@@ -153,13 +153,28 @@ def updateOrderStatus(order_id, status):
     sql = "UPDATE orders SET order_status = %s WHERE order_id = %s"
     cursor.execute(sql, (status, order_id))
     conn.commit()
-
+    
+def updateDeliveryOrderStatus(order_id, status):
+    """
+    更新送貨订单状态
+    """
+    sql = "UPDATE delivery_orders SET delivery_status = %s WHERE order_id = %s"
+    cursor.execute(sql, (status, order_id))
+    conn.commit()
+    
 def getOrderList(user_id):
     """
-    获取用户的订单列表
+    获取用户的订单列表，
+    如果订单在 delivery_order 表中存在，返回对应的 delivery_status。
     """
-    sql = "SELECT * FROM orders WHERE user_id = %s"
-    cursor.execute(sql, (user_id,))
+    # 获取用户的订单列表
+    sql_orders = """
+    SELECT o.*, d.delivery_status
+    FROM orders o
+    LEFT JOIN delivery_orders d ON o.order_id = d.order_id
+    WHERE o.user_id = %s AND o.order_status != 'completed'
+    """
+    cursor.execute(sql_orders, (user_id,))
     return cursor.fetchall()
     
 def getOrderListDetail(order_id):
@@ -281,8 +296,6 @@ def getOwnDeliveryOrders_end(delivery_user_id):
     cursor.execute(sql,(delivery_user_id,))
     return cursor.fetchall()
 
-
-
 def update_delivery_status_and_time(delivery_id, new_status, field_to_update, time_value):
     """
     更新外送訂單的狀態和指定時間欄位。
@@ -298,8 +311,6 @@ def update_delivery_status_and_time(delivery_id, new_status, field_to_update, ti
         """
     cursor.execute(sql, (new_status, time_value, delivery_id))
     conn.commit()
-
-
 
 # 关闭数据库连接（程序结束时调用）
 def closeConnection():

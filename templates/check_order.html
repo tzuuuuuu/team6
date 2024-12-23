@@ -44,7 +44,7 @@ a {
     text-decoration: none;
     border-radius: 5px;
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-    margin: 0 auto; <!--按鈕居中-->
+    margin: 0 auto;
 }
 a:hover {
     background-color: #0056b3;
@@ -57,12 +57,14 @@ a:hover {
 <div id="main">
     
     <h2>顧客看訂單</h2>
+
     <table>
         <tr>
             <th>訂單編號</th>
             <th>訂單總金額</th>
             <th>下單時間</th>
             <th>訂單狀態</th>
+			<th>取貨</th>
             <th>訂單詳情</th>
         </tr>
         
@@ -71,8 +73,32 @@ a:hover {
             <td>{{ rec.order_id }}</td>
             <td>{{ rec.total_price }}</td>
             <td>${{ rec.order_date }}</td>
-            <td>{{ rec.order_status }}</td>
-            <td><a href="/check_order_detail/{{ rec.order_id }}">詳情</button></td>
+			<!-- 訂單狀態 -->
+            <td>
+                {% if rec.delivery_status == 'in_delivery' %}
+                    配送中
+                {% elif rec.delivery_status == 'accepted' %}
+                    已接單
+                {% elif rec.delivery_status == 'pending' %}
+                    待處理
+                {% elif rec.order_status == 'in_delivery' %}
+                    配送中
+                {% elif rec.order_status == 'pending' %}
+                    待處理
+                {% else %}
+                    未知狀態
+                {% endif %}
+            </td>
+
+            <!-- 取貨 -->
+            <td>
+                {% if rec.delivery_status == 'in_delivery' or rec.order_status == 'in_delivery' %}
+                    <a href="/pickup_order/{{ rec.order_id }}">取貨</a>
+				{% else %}
+                    --
+                {% endif %}
+            </td>
+            <td><a href="/check_order_detail/{{ rec.order_id }}">詳情</a></td>
         </tr>
         {% endfor %}
     </table>
