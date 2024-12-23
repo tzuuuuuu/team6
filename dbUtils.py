@@ -153,13 +153,20 @@ def updateOrderStatus(order_id, status):
     sql = "UPDATE orders SET order_status = %s WHERE order_id = %s"
     cursor.execute(sql, (status, order_id))
     conn.commit()
-
+    
 def getOrderList(user_id):
     """
-    获取用户的订单列表
+    获取用户的订单列表，
+    如果订单在 delivery_order 表中存在，返回对应的 delivery_status。
     """
-    sql = "SELECT * FROM orders WHERE user_id = %s"
-    cursor.execute(sql, (user_id,))
+    # 获取用户的订单列表
+    sql_orders = """
+    SELECT o.*, d.delivery_status
+    FROM orders o
+    LEFT JOIN delivery_orders d ON o.order_id = d.order_id
+    WHERE o.user_id = %s
+    """
+    cursor.execute(sql_orders, (user_id,))
     return cursor.fetchall()
     
 def getOrderListDetail(order_id):
