@@ -134,10 +134,10 @@ def customer_settlement():
 
 # 查看所有訂單 (外送員)
 @app.route('/allorders')
-#@login_required
+@login_required
 def all_orders():
-    #if session.get('role') != 'delivery':
-        #return redirect('/')
+    if session.get('role') != 'delivery':
+        return redirect('/')
     data = DB.getDeliveryOrderList()
     delivery_name = session.get('username')  # 從 session 中獲取名稱
     return render_template('allorders.html', data=data, delivery_name=delivery_name)
@@ -240,8 +240,8 @@ def customer_pickup_order(order_id):
 @app.route('/accept_order', methods=['POST'])
 #@login_required
 def accept_order():
-    #if session.get('role') != 'delivery':
-    #    return redirect('/')
+    if session.get('role') != 'delivery':
+        return redirect('/')
     order_id = request.form.get('order_id')
     delivery_user_id = session.get('user_id')
     message = ""
@@ -257,12 +257,14 @@ def accept_order():
     return render_template('allorders.html', message=message, data=data)
 
 @app.route('/owndelivery')
-#@login_required
+@login_required
 def own_delivery():
-    data = DB.getOwnDeliveryOrders()
-    order = DB.getOwnDeliveryOrders_ing()
-    endorder = DB.getOwnDeliveryOrders_end()
-    return render_template('owndelivery.html', data=data, order=order, endorder=endorder)
+    delivery_user_id = session.get('user_id')
+    delivery_name = session.get('username')
+    data = DB.getOwnDeliveryOrders(delivery_user_id)
+    order = DB.getOwnDeliveryOrders_ing(delivery_user_id)
+    endorder = DB.getOwnDeliveryOrders_end(delivery_user_id)
+    return render_template('owndelivery.html', data=data, order=order, endorder=endorder,delivery_user_id=delivery_user_id,delivery_name=delivery_name)
 
 @app.route('/update_status', methods=['POST'])
 #@login_required

@@ -272,28 +272,28 @@ def addDeliveryOrder(order_id, delivery_user_id):
     conn.commit()
     return cursor.lastrowid
 
-def getOwnDeliveryOrders():
+def getOwnDeliveryOrders(delivery_user_id):
     """
     查詢當前登入外送員接的訂單
     """
-    sql = "SELECT * FROM delivery_orders WHERE delivery_status = 'accepted'"
-    cursor.execute(sql)
+    sql = "SELECT * FROM delivery_orders WHERE delivery_status = 'accepted' AND delivery_user_id = %s"
+    cursor.execute(sql,(delivery_user_id,))
     return cursor.fetchall()
 
-def getOwnDeliveryOrders_ing():
+def getOwnDeliveryOrders_ing(delivery_user_id):
     """
     查詢當前登入外送員外送中的訂單
     """
-    sql = "SELECT * FROM delivery_orders WHERE delivery_status = 'in_delivery'"
-    cursor.execute(sql)
+    sql = "SELECT * FROM delivery_orders WHERE delivery_status = 'in_delivery' AND delivery_user_id = %s"
+    cursor.execute(sql,(delivery_user_id,))
     return cursor.fetchall()
 
-def getOwnDeliveryOrders_end():
+def getOwnDeliveryOrders_end(delivery_user_id):
     """
     查詢當前登入外送員已完成的訂單
     """
-    sql = "SELECT * FROM delivery_orders WHERE delivery_status = 'completed'"
-    cursor.execute(sql)
+    sql = "SELECT * FROM delivery_orders WHERE delivery_status = 'completed' AND delivery_user_id = %s"
+    cursor.execute(sql,(delivery_user_id,))
     return cursor.fetchall()
 
 def update_delivery_status_and_time(delivery_id, new_status, field_to_update, time_value):
@@ -305,9 +305,9 @@ def update_delivery_status_and_time(delivery_id, new_status, field_to_update, ti
     :param time_value: 當前時間值
     """
     sql = f"""
-            UPDATE delivery_table
-            SET delivery_status = ?, {field_to_update} = ?
-            WHERE delivery_id = ?
+            UPDATE delivery_orders
+            SET delivery_status = %s, {field_to_update} = %s
+            WHERE delivery_id = %s
         """
     cursor.execute(sql, (new_status, time_value, delivery_id))
     conn.commit()
