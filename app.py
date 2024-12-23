@@ -139,7 +139,8 @@ def all_orders():
     if session.get('role') != 'delivery':
         return redirect('/')
     data = DB.getDeliveryOrderList()
-    return render_template('allorders.html', data=data)
+    delivery_name = session.get('username')  # 從 session 中獲取名稱
+    return render_template('allorders.html', data=data, delivery_name=delivery_name)
 
 # 顧客主頁
 @app.route('/customer')
