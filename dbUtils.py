@@ -265,7 +265,7 @@ def addDeliveryOrder(order_id, delivery_user_id):
     分配訂單給外送員，插入到 delivery_orders 表
     """
     sql = """
-    INSERT INTO delivery_orders (order_id, delivery_user_id, delivery_status, pickedup_time, delivery_time)
+    INSERT INTO delivery_orders (order_id, delivery_user_id, delivery_status, pickup_time, delivery_time)
     VALUES (%s, %s, 'accepted', NULL, NULL)
     """
     cursor.execute(sql, (order_id, delivery_user_id))
