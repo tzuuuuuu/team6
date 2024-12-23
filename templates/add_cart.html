@@ -83,7 +83,7 @@ button:hover {
 		<p>餐點價格：${{ rec.f_price }}</p>
     {% endfor %}    
         <label>數量：</label>
-        <input type="number" step="1" name="quantity" required><br><br>
+        <input type="number" step="1" name="quantity" value="1" min="1" required><br><br>
         <button type="submit">加入</button><br/>
 		<a href="/select_food">返回</a>
     </form>
