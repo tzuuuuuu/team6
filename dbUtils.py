@@ -209,7 +209,7 @@ def addToReview(data):
 
 def getReview():
     """
-    获取評論
+    获取評論(用評分進行降序排列，次要以編號進行升序排列)
     """
     sql = """
     SELECT review.review_id, user.username, orders.total_price, review.review_date, review.grade, review.review

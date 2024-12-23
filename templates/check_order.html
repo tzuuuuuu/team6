@@ -5,51 +5,86 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>顧客看訂單</title>
 <style type="text/css">
+/* 基本樣式 */
 body {
-    background-color: #f0f0f0;
-    font-family: '標楷體', 'KaiTi', sans-serif;
+    background-color: #f7f9fc;
+    font-family: 'Microsoft JhengHei', '標楷體', 'KaiTi', sans-serif;
+    margin: 0;
+    padding: 0;
 }
+
+/* 主容器樣式 */
 #main {
-    width: 600px;
-    margin: 20px auto;
-    padding: 20px;
+    width: 800px;
+    margin: 50px auto;
+    padding: 30px;
     background: #ffffff;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.15);
+    transition: transform 0.2s;
 }
+#main:hover {
+    transform: translateY(-5px); /* 懸停效果 */
+}
+
+/* 標題樣式 */
+h2 {
+    font-size: 24px;
+    color: #007BFF;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* 表格樣式 */
 table {
     width: 100%;
     border-collapse: collapse;
     margin-top: 10px;
 }
-table, th, td {
-    border: 1px solid #ddd;
-}
 th, td {
-    padding: 8px;
-    text-align: left;
+    border: 1px solid #ddd;
+    padding: 12px;
+    text-align: center;
 }
 th {
+    background-color: #007BFF;
+    color: #ffffff;
+    font-weight: bold;
+}
+tr:nth-child(even) {
     background-color: #f2f2f2;
 }
-a {
-    display: block;
-    width: 125px;
-    height: 40px;
-    line-height: 40px;
-    background-color: #007BFF;
-    color: white;
+tr:hover {
+    background-color: #e6f7ff;
+}
+
+/* 按鈕樣式 */
+a, .btn {
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 14px;
     text-align: center;
     text-decoration: none;
+    color: #ffffff;
+    background-color: #007BFF;
     border-radius: 5px;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-    margin: 0 auto;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s, transform 0.3s;
+	border: none;
+    outline: none;
 }
-a:hover {
+a:hover, .btn:hover {
     background-color: #0056b3;
-    color: white;
+    transform: scale(1.05);
     font-weight: bold;
+}
+
+/* 返回與購物車按鈕區域 */
+.buttons {
+    display: flex;
+    justify-content: center;
+    gap: 20px; /* 按鈕之間的距離 */
+    margin-top: 20px;
 }
 </style>
 </head>
@@ -71,8 +106,8 @@ a:hover {
         {% for rec in data %}
         <tr>
             <td>{{ rec.order_id }}</td>
-            <td>{{ rec.total_price }}</td>
-            <td>${{ rec.order_date }}</td>
+            <td>${{ rec.total_price }}</td>
+            <td>{{ rec.order_date }}</td>
 			<!-- 訂單狀態 -->
             <td>
                 {% if rec.delivery_status == 'in_delivery' %}
