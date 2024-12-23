@@ -78,7 +78,7 @@ def logout():
 def home():
     role = session.get('role')
     if role == 'merchant':
-        return redirect('/seller/settlement')   # 商家結算頁
+        return redirect('/merchant/menu')   # 商家結算頁
     elif role == 'delivery':
         return redirect('/allorders')          # 外送員所有訂單頁
     elif role == 'customer':
@@ -141,6 +141,60 @@ def all_orders():
     data = DB.getDeliveryOrderList()
     delivery_name = session.get('username')  # 從 session 中獲取名稱
     return render_template('allorders.html', data=data, delivery_name=delivery_name)
+
+# 商家管理菜單頁面
+@app.route('/merchant/menu', methods=['GET', 'POST'])
+@login_required
+def merchant_menu():
+    if session.get('role') != 'merchant':
+        return redirect('/')
+
+    merchant_id = session.get('user_id')  # 取得商家 ID
+
+    if request.method == 'POST':
+        # 添加菜品
+        food_name = request.form.get('food_name')
+        food_price = request.form.get('food_price')
+        food_description = request.form.get('food_description')
+
+        if not food_name or not food_price:
+            flash("菜品名稱和價格為必填項")
+        else:
+            data = {
+                "merchant_id": merchant_id,
+                "f_name": food_name,
+                "f_price": float(food_price),
+                "f_content": food_description
+            }
+            DB.addFood(data)
+            flash("成功新增菜品！")
+
+    # 獲取商家菜品列表
+    menu_items = DB.getMerchantMenu(merchant_id)
+
+    return render_template('merchant_menu.html', menu_items=menu_items, merchant_name=session['username'])
+
+# 商家刪除菜品
+@app.route('/merchant/delete_food/<int:food_id>', methods=['POST'])
+@login_required
+def delete_food(food_id):
+    if session.get('role') != 'merchant':
+        return redirect('/')
+    DB.deleteFood(food_id)
+    flash("菜品刪除成功！")
+    return redirect(url_for('merchant_menu'))
+
+# 商家查看訂單頁面
+@app.route('/merchant/orders')
+@login_required
+def merchant_orders():
+    if session.get('role') != 'merchant':
+        return redirect('/')
+
+    merchant_id = session.get('user_id')
+    orders = DB.getMerchantOrders(merchant_id)  # 獲取商家的訂單
+
+    return render_template('merchant_orders.html', orders=orders, merchant_name=session['username'])
 
 # 顧客主頁
 @app.route('/customer')
