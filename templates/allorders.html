@@ -107,20 +107,28 @@
                 </tr>
             </thead>
             <tbody>
-                {% for rec in data %}
-                <tr>
-                    <td>{{ rec.order_id }}</td>
-                    <td>{{ rec.user_id }}</td>
-                    <td>${{ rec.total_price }}</td>
-                    <td>{{ rec.order_date }}</td>
-                    <td>
-                        <form method="post" action="/accept_order">
-                            <input type="hidden" name="order_id" value="{{ rec.order_id }}">
-                            <button type="submit" class="btn btn-sm btn-success">接單</button>
-                        </form>
-                    </td>
-                </tr>
-                {% endfor %}
+                {% if data %}
+                    {% for rec in data %}
+                    <tr>
+                        <td>{{ rec.order_id }}</td>
+                        <td>{{ rec.user_id }}</td>
+                        <td>${{ rec.total_price }}</td>
+                        <td>{{ rec.order_date }}</td>
+                        <td>
+                            {% if rec.order_status == 'pending' %}
+                            <form method="post" action="/accept_order">
+                                <input type="hidden" name="order_id" value="{{ rec.order_id }}">
+                                <button type="submit" class="btn btn-sm btn-success">接單</button>
+                            </form>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                {% else %}
+                    <tr>
+                        <td colspan="6">目前沒有待接的訂單。</td>
+                    </tr>
+                {% endif %}
             </tbody>
         </table>
 
