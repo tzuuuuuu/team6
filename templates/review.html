@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>顧客新增評論</title>
+<style type="text/css">
+body {
+    background-color: #f0f0f0;
+    font-family: '標楷體', 'KaiTi', sans-serif;
+}
+#main {
+    width: 600px;
+    margin: 20px auto;
+    padding: 20px;
+    background: #ffffff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+table, th, td {
+    border: 1px solid #ddd;
+}
+th, td {
+    padding: 8px;
+    text-align: left;
+}
+th {
+    background-color: #f2f2f2;
+}
+a {
+    display: block;
+    width: 125px;
+    height: 40px;
+    line-height: 40px;
+    background-color: #007BFF;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 5px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    margin: 0 auto; /*<!--按鈕居中-->*/
+}
+a:hover {
+    background-color: #0056b3;
+    color: white;
+    font-weight: bold;
+}
+button {
+    display: block;
+    width: 125px;
+    height: 40px;
+    line-height: 40px;
+    background-color: #007BFF;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 5px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    margin: 0 auto;
+	border: none;
+    outline: none;
+}
+button:hover {
+    background-color: #0056b3;
+    color: white;
+    font-weight: bold;
+}
+</style>
+</head>
+<body>
+<div id="main">
+    <h2>新增評論</h2>
+    <form action="{{ url_for('customer_review', data=data, order_id=order_id) }}" method="post">
+	{% for rec in data %}
+	    <p>訂單編號：{{ rec.order_id }}</p>
+		<p>訂單價格：${{ rec.total_price }}</p>
+    {% endfor %}    
+		評價: 
+<input type="radio" id="grade" name="grade" value="1"  /> 一星
+<input type="radio" id="grade" name="grade" value="2" /> 二星
+<input type="radio" id="grade" name="grade" value="3" /> 三星
+<input type="radio" id="grade" name="grade" value="4" /> 四星
+<input type="radio" id="grade" name="grade" value="5" /> 五星 <br/>
+        <label>評論:</label>
+        <textarea name="review" required></textarea><br>
+		<button type="submit">送出</button><br/>
+		<a href="/customer">略過</a>
+    </form>
+</div>
+</body>
+</html>
