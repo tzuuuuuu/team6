@@ -96,8 +96,9 @@
                     <th>外送編號</th>
                     <th>訂單編號</th>
                     <th>取貨時間</th>
-                    <th>外送時間</th>
+                    <!--<th>外送時間</th>-->
                     <th>狀態</th>
+                    <th>地址</th>
                     <th>取貨</th>
                 </tr>
             </thead>
@@ -108,8 +109,9 @@
                         <td>{{ rec.delivery_id }}</td>
                         <td>{{ rec.order_id }}</td>
                         <td>{{ rec.pickup_time }}</td>
-                        <td>{{ rec.delivery_time }}</td>
+                        <!--<td>{{ rec.delivery_time }}</td>-->
                         <td>{{ rec.delivery_status }}</td>
+                        <td></td>
                         <td>
                             {% if rec.delivery_status == 'accepted' %}
                             <form action="/update_status" method="POST">
@@ -129,7 +131,7 @@
             </tbody>
         </table>
 
-        <h2 class="text-secondary text-center">外送中清單</h2>
+        <h2 class="text-secondary text-center">外送中訂單</h2>
         <table>
             <thead>
                 <tr>
