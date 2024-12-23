@@ -5,61 +5,122 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>顧客主頁面</title>
 <style type="text/css">
+/* 基本樣式 */
 body {
-    background-color: #f0f0f0;
-    font-family: '標楷體', 'KaiTi', sans-serif;
+    background-color: #f7f9fc;
+    font-family: 'Microsoft JhengHei', '標楷體', 'KaiTi', sans-serif;
+    margin: 0;
+    padding: 0;
 }
+
+/* 主容器樣式 */
 #main {
     width: 600px;
-    margin: 20px auto;
-    padding: 20px;
+    margin: 50px auto;
+    padding: 30px;
     background: #ffffff;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.15);
+    transition: transform 0.2s;
 }
+#main:hover {
+    transform: translateY(-5px); /* 懸停效果 */
+}
+
+/* 標題樣式 */
+h1 {
+    font-size: 24px;
+    color: #333333;
+    text-align: center;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #007BFF;
+    padding-bottom: 10px;
+}
+
+/* 按鈕樣式 */
 li a {
     display: block;
-    width: 125px;
-    height: 40px;
-    line-height: 40px;
-    background-color: #007BFF;
-    color: white;
+    width: 200px;
+    height: 45px;
+    line-height: 45px;
+    margin: 0 auto;
+    background: linear-gradient(to right, #007BFF, #0056b3);
+    color: #ffffff;
     text-align: center;
     text-decoration: none;
-    border-radius: 5px;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-    margin: 0 auto; <!--按鈕居中-->
+    border-radius: 25px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease-in-out;
 }
 li a:hover {
-    background-color: #0056b3;
-    color: white;
+    background: linear-gradient(to right, #0056b3, #003f7f);
+    transform: scale(1.05);
     font-weight: bold;
 }
+
+/* 禁用按鈕樣式 */
 .disabled {
     pointer-events: none;
-    background-color: #cccccc;
+    background: #cccccc;
     color: #666666;
-    opacity: 1;
+    opacity: 0.7;
+    border: 1px solid #999999;
 }
+
+/* 列表樣式 */
 ul {
     list-style-type: none;
     padding: 0;
+    margin: 0;
 }
 li {
-    margin-bottom: 15px;
+    margin-bottom: 20px;
+}
+
+/* 分隔線樣式 */
+.separator {
+    margin: 30px 0;
+    border-top: 2px dashed #dddddd;
+}
+
+/* 登出按鈕 */
+.logout-btn {
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    padding: 10px 20px;
+    background: #dc3545;
+    color: #ffffff;
+    font-size: 14px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+.logout-btn:hover {
+    background-color: #c82333;
 }
 </style>
 </head>
 <body>
-<div id="main">
-<ul>
-   <li><a href="/select_food">餐廳1</a></li>
-   <li><a href="#" class="disabled">餐廳2(裝飾)</a></li>
-   <li><a href="#" class="disabled">餐廳3(裝飾)</a></li>
-   <li><br/><a href="/check_order">查看訂單狀態</a></li>
-   <li><br/><a href="/logout">登出</a></li>
-</ul>
-</div>
+    <!-- 登出按鈕 -->
+    <button class="logout-btn" onclick="window.location.href='/logout'">登出</button>
+
+    <!-- 主內容 -->
+    <div id="main">
+        <h1>顧客主頁面</h1>
+        <ul>
+            <!-- 餐廳清單 -->
+            <li><a href="/select_food">餐廳1</a></li>
+            <li><a href="#" class="disabled" aria-disabled="true">餐廳2 (未開放)</a></li>
+            <li><a href="#" class="disabled" aria-disabled="true">餐廳3 (未開放)</a></li>
+
+            <!-- 分隔線 -->
+            <div class="separator"></div>
+
+            <!-- 其他操作 -->
+            <li><a href="/customer/settlement">查看訂單狀態</a></li>
+        </ul>
+    </div>
 </body>
 </html>
