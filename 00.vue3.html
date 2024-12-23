@@ -1,121 +1,161 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>外送平台商家系統</title>
+    <title>Food Delivery Management</title>
     <style>
         body {
             font-family: Arial, sans-serif;
             margin: 20px;
+            padding: 20px;
+            background-color: #f9f9f9;
         }
-        .menu, .orders, .notifications {
-            margin-bottom: 30px;
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
-        .menu-item, .order-item, .notification-item {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 10px;
+        h1, h2 {
+            text-align: center;
         }
-        button {
-            padding: 5px 10px;
-            background-color: #4CAF50;
+        .btn {
+            display: inline-block;
+            margin: 10px 0;
+            padding: 10px 15px;
+            background-color: #007BFF;
             color: white;
             border: none;
+            border-radius: 5px;
+            text-decoration: none;
+            text-align: center;
             cursor: pointer;
         }
-        button:hover {
-            background-color: #45a049;
+        .btn:hover {
+            background-color: #0056b3;
         }
-        .button-danger {
-            background-color: #f44336;
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
         }
-        .button-danger:hover {
-            background-color: #d32f2f;
+        th, td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #f4f4f4;
         }
     </style>
 </head>
 <body>
-    <h1>外送平台商家系統</h1>
+    <div class="container">
+        <h1>Food Delivery Management</h1>
 
-    <div class="menu">
-        <h2>上架菜單</h2>
-        <input type="text" id="new-item-name" placeholder="新增食物名稱">
-        <button onclick="addMenuItem()">新增到菜單</button>
-        <div id="menu-list">
-            <!-- Example menu items -->
-        </div>
-    </div>
+        <h2>Your Food Items</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Food Name</th>
+                    <th>Price</th>
+                    <th>Content</th>
+                    <th>Feedback</th>
+                </tr>
+            </thead>
+            <tbody id="foodList">
+                <!-- Food items will be listed here dynamically -->
+            </tbody>
+        </table>
 
-    <div class="orders">
-        <h2>確認收單</h2>
-        <ul id="order-list">
-            <!-- Orders will be added here -->
-        </ul>
-    </div>
+        <button class="btn" onclick="addNewFood()">Add New Food</button>
 
-    <div class="notifications">
-        <h2>通知取餐</h2>
-        <ul id="notification-list">
-            <!-- Notifications will be added here -->
-        </ul>
+        <h2>Customer Orders</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Order ID</th>
+                    <th>Food Name</th>
+                    <th>Quantity</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody id="orderList">
+                <!-- Orders will be listed here dynamically -->
+            </tbody>
+        </table>
     </div>
 
     <script>
-        function addMenuItem() {
-            const newItemName = document.getElementById('new-item-name').value.trim();
-            if (newItemName === '') {
-                alert('請輸入食物名稱！');
-                return;
+        // Placeholder data for demonstration
+        const foods = [
+            { name: 'Burger', price: 5.99, content: 'Beef patty with lettuce and cheese', feedback: 'Delicious!' },
+            { name: 'Pizza', price: 9.99, content: 'Cheese, tomato sauce, and pepperoni', feedback: 'Great!' }
+        ];
+
+        const orders = [
+            { id: 1, foodName: 'Burger', quantity: 2, status: 'Pending' },
+            { id: 2, foodName: 'Pizza', quantity: 1, status: 'Ready for Pickup' }
+        ];
+
+        function renderFoodList() {
+            const foodList = document.getElementById('foodList');
+            foodList.innerHTML = '';
+            foods.forEach(food => {
+                foodList.innerHTML += `
+                    <tr>
+                        <td>${food.name}</td>
+                        <td>$${food.price.toFixed(2)}</td>
+                        <td>${food.content}</td>
+                        <td>${food.feedback}</td>
+                    </tr>
+                `;
+            });
+        }
+
+        function renderOrderList() {
+            const orderList = document.getElementById('orderList');
+            orderList.innerHTML = '';
+            orders.forEach(order => {
+                orderList.innerHTML += `
+                    <tr>
+                        <td>${order.id}</td>
+                        <td>${order.foodName}</td>
+                        <td>${order.quantity}</td>
+                        <td>${order.status}</td>
+                        <td><button class="btn" onclick="updateOrderStatus(${order.id})">Mark as Ready</button></td>
+                    </tr>
+                `;
+            });
+        }
+
+        function addNewFood() {
+            const name = prompt('Enter food name:');
+            const price = parseFloat(prompt('Enter food price:'));
+            const content = prompt('Enter food content:');
+            if (name && !isNaN(price) && content) {
+                foods.push({ name, price, content, feedback: '' });
+                renderFoodList();
+            } else {
+                alert('Invalid input. Please try again.');
             }
-
-            const menuList = document.getElementById('menu-list');
-            const menuItem = document.createElement('div');
-            menuItem.className = 'menu-item';
-            menuItem.innerHTML = `<span>${newItemName}</span> <button onclick="addToOrders('${newItemName}')">加入訂單</button>`;
-            menuList.appendChild(menuItem);
-
-            document.getElementById('new-item-name').value = '';
         }
 
-        function addToOrders(item) {
-            const orderList = document.getElementById('order-list');
-            const listItem = document.createElement('li');
-            listItem.className = 'order-item';
-
-            listItem.innerHTML = `${item} 
-                <button onclick="confirmOrder(this, '${item}')">確認收單</button>
-                <button class="button-danger" onclick="rejectOrder(this, '${item}')">拒絕收單</button>`;
-            orderList.appendChild(listItem);
+        function updateOrderStatus(orderId) {
+            const order = orders.find(o => o.id === orderId);
+            if (order) {
+                order.status = 'Ready for Pickup';
+                renderOrderList();
+            }
         }
 
-        function confirmOrder(button, itemName) {
-            const orderItem = button.parentElement;
-
-            // Move order to notifications
-            const notificationList = document.getElementById('notification-list');
-            const notificationItem = document.createElement('li');
-            notificationItem.className = 'notification-item';
-            notificationItem.textContent = `${itemName} - 已通知外賣小哥取餐`;
-            notificationList.appendChild(notificationItem);
-
-            // Remove from orders
-            orderItem.remove();
-        }
-
-        function rejectOrder(button, itemName) {
-            const orderItem = button.parentElement;
-
-            // Move order to notifications
-            const notificationList = document.getElementById('notification-list');
-            const notificationItem = document.createElement('li');
-            notificationItem.className = 'notification-item';
-            notificationItem.textContent = `${itemName} - 沒貨了，已通知外賣小哥`;
-            notificationList.appendChild(notificationItem);
-
-            // Remove from orders
-            orderItem.remove();
-        }
+        // Initial rendering
+        renderFoodList();
+        renderOrderList();
     </script>
 </body>
 </html>
