@@ -78,7 +78,7 @@ def logout():
 def home():
     role = session.get('role')
     if role == 'merchant':
-        return redirect('/merchant/menu')   # 商家結算頁
+        return redirect('/seller/settlement')   # 商家結算頁
     elif role == 'delivery':
         return redirect('/allorders')          # 外送員所有訂單頁
     elif role == 'customer':
@@ -134,67 +134,13 @@ def customer_settlement():
 
 # 查看所有訂單 (外送員)
 @app.route('/allorders')
-#@login_required
+@login_required
 def all_orders():
-    #if session.get('role') != 'delivery':
-        #return redirect('/')
+    if session.get('role') != 'delivery':
+        return redirect('/')
     data = DB.getDeliveryOrderList()
     delivery_name = session.get('username')  # 從 session 中獲取名稱
     return render_template('allorders.html', data=data, delivery_name=delivery_name)
-
-# 商家管理菜單頁面
-@app.route('/merchant/menu', methods=['GET', 'POST'])
-@login_required
-def merchant_menu():
-    if session.get('role') != 'merchant':
-        return redirect('/')
-
-    merchant_id = session.get('user_id')  # 取得商家 ID
-
-    if request.method == 'POST':
-        # 添加菜品
-        food_name = request.form.get('food_name')
-        food_price = request.form.get('food_price')
-        food_description = request.form.get('food_description')
-
-        if not food_name or not food_price:
-            flash("菜品名稱和價格為必填項")
-        else:
-            data = {
-                "merchant_id": merchant_id,
-                "f_name": food_name,
-                "f_price": float(food_price),
-                "f_content": food_description
-            }
-            DB.addFood(data)
-            flash("成功新增菜品！")
-
-    # 獲取商家菜品列表
-    menu_items = DB.getMerchantMenu(merchant_id)
-
-    return render_template('merchant.html', menu_items=menu_items, merchant_name=session['username'])
-
-# 商家刪除菜品
-@app.route('/merchant/delete_food/<int:food_id>', methods=['POST'])
-@login_required
-def delete_food(food_id):
-    if session.get('role') != 'merchant':
-        return redirect('/')
-    DB.deleteFood(food_id)
-    flash("菜品刪除成功！")
-    return redirect(url_for('merchant_menu'))
-
-# 商家查看訂單頁面
-@app.route('/merchant/orders')
-@login_required
-def merchant_orders():
-    if session.get('role') != 'merchant':
-        return redirect('/')
-
-    merchant_id = session.get('user_id')
-    orders = DB.getMerchantOrders(merchant_id)  # 獲取商家的訂單
-
-    return render_template('merchant_orders.html', orders=orders, merchant_name=session['username'])
 
 # 顧客主頁
 @app.route('/customer')
@@ -288,8 +234,8 @@ def customer_pickup_order(order_id):
     if session.get('role') != 'customer':
         return redirect('/')
     status = 'completed' 
-    #DB.updateOrderStatus(order_id, status)
-    #DB.updateDeliveryOrderStatus(order_id, status)
+    DB.updateOrderStatus(order_id, status)
+    DB.updateDeliveryOrderStatus(order_id, status)
     return redirect(url_for('customer_review', order_id=order_id))
     
 # 顧客發表評論
@@ -318,11 +264,12 @@ def customer_check_review():
     data = DB.getReview()
     return render_template('check_review.html', data=data)
 
+
 @app.route('/accept_order', methods=['POST'])
 #@login_required
 def accept_order():
-    #if session.get('role') != 'delivery':
-    #    return redirect('/')
+    if session.get('role') != 'delivery':
+        return redirect('/')
     order_id = request.form.get('order_id')
     delivery_user_id = session.get('user_id')
     message = ""
@@ -338,12 +285,14 @@ def accept_order():
     return render_template('allorders.html', message=message, data=data)
 
 @app.route('/owndelivery')
-#@login_required
+@login_required
 def own_delivery():
-    data = DB.getOwnDeliveryOrders()
-    order = DB.getOwnDeliveryOrders_ing()
-    endorder = DB.getOwnDeliveryOrders_end()
-    return render_template('owndelivery.html', data=data, order=order, endorder=endorder)
+    delivery_user_id = session.get('user_id')
+    delivery_name = session.get('username')
+    data = DB.getOwnDeliveryOrders(delivery_user_id)
+    order = DB.getOwnDeliveryOrders_ing(delivery_user_id)
+    endorder = DB.getOwnDeliveryOrders_end(delivery_user_id)
+    return render_template('owndelivery.html', data=data, order=order, endorder=endorder,delivery_user_id=delivery_user_id,delivery_name=delivery_name)
 
 @app.route('/update_status', methods=['POST'])
 #@login_required
