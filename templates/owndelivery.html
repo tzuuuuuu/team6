@@ -117,7 +117,7 @@
                             {% if rec.delivery_status == 'accepted' %}
                             <form action="/update_status" method="POST">
                                 <input type="hidden" name="delivery_id" value="{{ rec.delivery_id }}">
-                                <input type="hidden" name="new_status" value="in_delivery">
+                                <input type="hidden" name="new_status" value="completed">
                                 <button type="submit" class="btn btn-sm btn-primary">已取貨</button>
                             </form>
                             {% endif %} 
