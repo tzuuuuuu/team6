@@ -287,9 +287,10 @@ def customer_check_order_detail(order_id):
 def customer_pickup_order(order_id):
     if session.get('role') != 'customer':
         return redirect('/')
-    user_id = session.get('user_id')
-    data = DB.getOrderList(user_id)
-    return render_template('check_order.html', data=data)
+    status = 'completed' 
+    DB.updateOrderStatus(order_id, status)
+    DB.updateDeliveryOrderStatus(order_id, status)
+    return render_template('customer.html')
 
 @app.route('/accept_order', methods=['POST'])
 #@login_required
