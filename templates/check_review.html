@@ -119,7 +119,21 @@ a:hover, .btn:hover {
                 <td>{{ rec.username }}</td>
                 <td>${{ rec.total_price }}</td>
 				<td>{{ rec.review_date }}</td>
-                <td>{{ rec.grade }}</td>
+				<td>
+                {% if rec.grade == '1' %}
+                    &#9733;&#9734;&#9734;&#9734;&#9734;1
+                {% elif rec.grade == '2' %}
+                    &#9733;&#9733;&#9734;&#9734;&#9734;2
+                {% elif rec.grade == '3' %}
+                    &#9733;&#9733;&#9733;&#9734;&#9734;3
+                {% elif rec.grade == '4' %}
+                    &#9733;&#9733;&#9733;&#9733;&#9734;4
+                {% elif rec.grade == '5' %}
+                    &#9733;&#9733;&#9733;&#9733;&#9733;5
+                {% else %}
+                    未知狀態
+                {% endif %}
+				</td>
                 <td>{{ rec.review }}</td>
             </tr>
             {% endfor %}
