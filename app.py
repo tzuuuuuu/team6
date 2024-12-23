@@ -226,6 +226,16 @@ def customer_check_order_detail(order_id):
         return redirect('/')
     data = DB.getOrderListDetail(order_id)
     return render_template('check_order_detail.html', data=data)
+    
+# 顧客取貨
+@app.route('/pickup_order/<int:order_id>', methods=['GET', 'POST'])
+@login_required
+def customer_pickup_order(order_id):
+    if session.get('role') != 'customer':
+        return redirect('/')
+    user_id = session.get('user_id')
+    data = DB.getOrderList(user_id)
+    return render_template('check_order.html', data=data)
 
 @app.route('/accept_order', methods=['POST'])
 #@login_required
