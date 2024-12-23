@@ -341,6 +341,14 @@ def update_delivery_status_and_time(delivery_id, new_status, field_to_update, ti
     cursor.execute(sql, (new_status, time_value, delivery_id))
     conn.commit()
 
+
+###備用商家，不用可刪
+def getAllItemList():
+    sql = "SELECT * FROM food"
+    cursor.execute(sql)
+    return cursor.fetchall()
+    
+
 # 关闭数据库连接（程序结束时调用）
 def closeConnection():
     """

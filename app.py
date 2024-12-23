@@ -328,5 +328,15 @@ def update_status():
     print(message)
     return redirect('/owndelivery')
 
+###備用商家，不用可刪
+@app.route('/restaurant_item')
+@login_required
+def all_restaurant_item():
+    if session.get('role') != 'merchant':
+        return redirect('/')
+    data = DB.getAllItemList()
+    #delivery_name = session.get('username')  # 從 session 中獲取名稱
+    return render_template('restaurant.html', data=data)
+
 if __name__ == '__main__':
     app.run(debug=True)
