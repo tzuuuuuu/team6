@@ -85,7 +85,7 @@
     <button class="logout-btn" onclick="window.location.href='/logout'">登出</button>
     
     <div class="container">
-        <h1 class="text-primary text-center">所有待接訂單</h1>
+        <h1 class="text-primary text-center">所有商品</h1>
         
         <!-- 歡迎訊息 -->
         <h5 class="text-end text-secondary">歡迎, {{ delivery_name }}!</h5>
@@ -103,37 +103,26 @@
                     <th>商品</th>
                     <th>金額</th>
                     <th>評論</th>
-                    <th>是否接單</th>
                 </tr>
             </thead>
             <tbody>
-                {% if data %}
+                
                     {% for rec in data %}
                     <tr>
-                        <td>{{ rec.order_id }}</td>
-                        <td>{{ rec.user_id }}</td>
-                        <td>${{ rec.total_price }}</td>
-                        <td>{{ rec.order_date }}</td>
-                        <td>
-                            {% if rec.order_status == 'pending' %}
-                            <form method="post" action="/accept_order">
-                                <input type="hidden" name="order_id" value="{{ rec.order_id }}">
-                                <button type="submit" class="btn btn-sm btn-success">接單</button>
-                            </form>
-                            {% endif %}
-                        </td>
+                        <td>{{ rec.food_id }}</td>
+                        <td>{{ rec.f_name }}</td>
+                        <td>${{ rec.f_price }}</td>
+                        <td>{{ rec.f_content }}</td>
+                        
                     </tr>
                     {% endfor %}
-                {% else %}
-                    <tr>
-                        <td colspan="6">目前沒有待接的訂單。</td>
-                    </tr>
-                {% endif %}
+                
             </tbody>
         </table>
 
         <!-- 按鈕區域 -->
         <div class="button-container">
+            <a href="" class="btn">新增商品</a>
             <a href="/seller/settlement" class="btn">前往結算頁面</a>
         </div>
     </div>
