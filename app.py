@@ -127,7 +127,7 @@ def customer_settlement():
     customer_id = session.get('user_id')  # 取得顧客 ID
     data = DB.getCustomerOrders(customer_id)  # 取得顧客訂單清單
     total_expense = sum(order['total_price'] for order in data)
-    return render_template('check_order.html',
+    return render_template('customer_settlement.html',
                            orders=data,
                            total_expense=total_expense,
                            customer_name=session['username'])
@@ -207,6 +207,16 @@ def customer_add_order():
     DB.createOrder(data)
     
     return redirect(url_for('customer_select_food'))
+
+# 顧客查看訂單
+@app.route('/check_order')
+@login_required
+def customer_check_order():
+    if session.get('role') != 'customer':
+        return redirect('/')
+    user_id = session.get('user_id')
+    data = DB.getOrderList(user_id)
+    return render_template('check_order.html', data=data)
 
 # 顧客查看訂單詳情
 @app.route('/check_order_detail/<int:order_id>', methods=['GET', 'POST'])

@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>查看訂單</title>
+    <style>
+        /* 基本樣式 */
+        body {
+            background-color: #f7f9fc;
+            font-family: 'Microsoft JhengHei', '標楷體', 'KaiTi', sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* 主容器樣式 */
+        #main {
+            width: 800px;
+            margin: 50px auto;
+            padding: 30px;
+            background: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.15);
+            transition: transform 0.2s;
+        }
+
+        #main:hover {
+            transform: translateY(-5px); /* 懸停效果 */
+        }
+
+        /* 標題樣式 */
+        h1, h3 {
+            text-align: center;
+            color: #007BFF;
+        }
+
+        h2 {
+            text-align: center;
+            color: #6c757d;
+        }
+
+        /* 表格樣式 */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            border: 1px solid #dee2e6;
+            padding: 10px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #007BFF;
+            color: white;
+        }
+
+        .badge {
+            padding: 5px 10px;
+            font-size: 14px;
+            border-radius: 5px;
+        }
+
+        /* 按鈕樣式 */
+        .btn {
+            padding: 10px 20px;
+            font-size: 14px;
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+            color: white;
+            display: inline-block;
+            margin: 5px;
+        }
+
+        .btn-info {
+            background-color: #17a2b8;
+        }
+
+        .btn-info:hover {
+            background-color: #138496;
+        }
+
+        .btn-secondary {
+            background-color: #6c757d;
+        }
+
+        .btn-secondary:hover {
+            background-color: #5a6268;
+        }
+    </style>
+</head>
+<body>
+    <div id="main">
+        <!-- 頁面標題 -->
+        <h1>顧客結算中心</h1>
+        <h2>歡迎, {{ customer_name }}！</h2>
+
+        <!-- 消費紀錄 -->
+        <div class="mt-4">
+            <h3>消費紀錄</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>訂單號</th>
+                        <th>訂單金額</th>
+                        <th>下單時間</th>
+                        <th>訂單狀態</th>
+                        <th>訂單詳情</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for order in orders %}
+                    <tr>
+                        <td>{{ order.order_id }}</td>
+                        <td>{{ order.total_price }} 元</td>
+                        <td>{{ order.order_date }}</td>
+                        <td>
+                            <span class="badge 
+                                {% if order.order_status == 'completed' %} 
+                                    bg-success 
+                                {% elif order.order_status == 'pending' %} 
+                                    bg-warning 
+                                {% else %} 
+                                    bg-secondary 
+                                {% endif %}
+                            ">
+                                {{ order.order_status }}
+                            </span>
+                        </td>
+                        <td>
+                            <a href="/check_order_detail/{{ order.order_id }}" class="btn btn-info">
+                                詳情
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <!-- 總消費金額 -->
+        <div class="mt-4 text-center">
+            <h3 class="text-success">
+                總消費金額：<strong>{{ total_expense }} 元</strong>
+            </h3>
+        </div>
+
+        <!-- 返回按鈕 -->
+        <div class="text-center mt-3">
+            <a href="/customer" class="btn btn-secondary">返回</a>
+        </div>
+    </div>
+</body>
+</html>
