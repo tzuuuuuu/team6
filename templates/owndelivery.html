@@ -111,7 +111,6 @@
                         <td>{{ rec.pickup_time }}</td>
                         <!--<td>{{ rec.delivery_time }}</td>-->
                         <td>{{ rec.delivery_status }}</td>
-                        <td></td>
                         <td>
                             {% if rec.delivery_status == 'accepted' %}
                             <form action="/update_status" method="POST">
