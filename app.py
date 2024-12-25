@@ -78,7 +78,7 @@ def logout():
 def home():
     role = session.get('role')
     if role == 'merchant':
-        return redirect('/seller/settlement')   # 商家結算頁
+        return redirect('/restaurant_item')   # 商家結算頁
     elif role == 'delivery':
         return redirect('/allorders')          # 外送員所有訂單頁
     elif role == 'customer':
@@ -335,8 +335,8 @@ def all_restaurant_item():
     if session.get('role') != 'merchant':
         return redirect('/')
     data = DB.getAllItemList()
-    #delivery_name = session.get('username')  # 從 session 中獲取名稱
-    return render_template('restaurant.html', data=data)
+    user_name = session.get('username')  # 從 session 中獲取名稱
+    return render_template('restaurant.html', data=data,user_name=user_name)
 
 if __name__ == '__main__':
     app.run(debug=True)
